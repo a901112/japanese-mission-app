@@ -1,5 +1,12 @@
-const CACHE_NAME = "jp-quiz-v9";
-const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./validator.js", "./data/questions/n5/airport.json", "./manifest.webmanifest", "./icon.svg"];
+const CACHE_NAME = "japanese-sense-trainer-v1";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./styles.css",
+  "./app.js",
+  "./manifest.webmanifest",
+  "./icon.svg"
+];
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
@@ -21,7 +28,8 @@ self.addEventListener("fetch", (event) => {
     request.mode === "navigate" ||
     request.destination === "document" ||
     request.destination === "script" ||
-    request.destination === "style";
+    request.destination === "style" ||
+    request.url.includes("/data/");
 
   if (shouldRefresh) {
     event.respondWith(
