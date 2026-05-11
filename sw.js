@@ -1,10 +1,40 @@
-const CACHE_NAME = "jp-quiz-v8";
-const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest", "./icon.svg"];
+const CACHE_NAME = "jp-quiz-v9";
+const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./validator.js", "./data/questions/n5/airport.json", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
 });
 
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
+      .then(() => self.clients.claim())
+  );
+});
+
 self.addEventListener("fetch", (event) => {
-  event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
+  const request = event.request;
+  const shouldRefresh =
+    request.mode === "navigate" ||
+    request.destination === "document" ||
+    request.destination === "script" ||
+    request.destination === "style";
+
+  if (shouldRefresh) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  event.respondWith(caches.match(request).then((cached) => cached || fetch(request)));
 });
