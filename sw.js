@@ -1,4 +1,4 @@
-const CACHE_NAME = "jp-quiz-v4";
+const CACHE_NAME = "jp-quiz-v6";
 const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", (event) => {
