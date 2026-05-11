@@ -7,55 +7,20 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="日文任務" />
-    <title>日文任務 N5-N1</title>
+    <title>日文任務 V8</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./icon.svg" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="app-shell">
-      <header class="topbar">
-        <div><p class="eyebrow">JLPT SPEAKING QUIZ V7</p><h1>日文任務</h1></div>
-        <button class="icon-button" id="homeButton" type="button" aria-label="回首頁" title="回首頁"><span aria-hidden="true">家</span></button>
-      </header>
-      <nav class="mode-tabs" aria-label="功能">
-        <button class="active" type="button" data-mode="quiz">測驗</button>
-        <button type="button" data-mode="particles">助詞</button>
-        <button type="button" data-mode="lyrics">歌詞假名</button>
-      </nav>
-      <section class="stats-strip" aria-label="練習統計">
-        <div><span id="todayCount">0</span><small>今日題數</small></div>
-        <div><span id="accuracy">--</span><small>答對率</small></div>
-        <div><span id="weakCount">0</span><small>弱點</small></div>
-      </section>
-      <section class="setup-panel" id="setupPanel">
-        <div class="section-heading"><h2>選程度</h2></div>
-        <div class="segmented" id="levelTabs" role="tablist" aria-label="JLPT 等級">
-          <button class="active" type="button" data-level="N5">N5</button><button type="button" data-level="N4">N4</button><button type="button" data-level="N3">N3</button><button type="button" data-level="N2">N2</button><button type="button" data-level="N1">N1</button>
-        </div>
-        <div class="section-heading scene-heading"><h2>選場景</h2></div>
-        <select class="scene-select" id="sceneSelect" aria-label="生活場景">
-          <option value="airport">機場：入境、行李、轉機</option><option value="hotel">飯店：入住、需求、客訴</option><option value="cafe">咖啡廳：點餐、外帶、客製</option><option value="yakiniku">燒肉餐廳：訂位、點餐、烤法</option><option value="laundry">洗衣店：投幣、烘乾、取件</option><option value="stationery">文具店：找商品、筆記本、包裝</option><option value="school">學校：上課、作業、請假</option><option value="office">公司：會議、進度、請求協助</option><option value="hospital">醫院：症狀、掛號、藥</option><option value="pharmacy">藥妝店：找藥、成分、免稅</option><option value="train">電車：換乘、延誤、月台</option><option value="supermarket">超市：結帳、袋子、熟食</option><option value="postoffice">郵局：寄包裹、地址、運費</option><option value="hairSalon">髮廊：預約、長度、造型</option><option value="bank">銀行：提款、換錢、手續費</option><option value="gym">健身房：入會、器材、課程</option><option value="apartment">租屋：看房、押金、設備</option><option value="cityHall">市役所：證明、登記、窗口</option>
-        </select>
-        <button class="primary full" id="startQuiz" type="button">開始測驗</button>
-      </section>
-      <section class="quiz-panel hidden" id="quizPanel" aria-live="polite">
-        <div class="mission-header"><div><p class="eyebrow" id="quizMeta">N5 · 機場</p><h2 id="quizTitle">聽音選意思</h2></div><span id="stepBadge">1 / 3</span></div>
-        <div class="pronunciation-card"><p class="prompt-label" id="questionPrompt">先聽日文，再選正確中文。</p><h2 id="questionText">すみません。</h2><p class="meaning hidden" id="answerReveal"></p></div>
-        <div class="sound-controls"><button class="secondary" id="playNormal" type="button">播放</button><button class="secondary" id="playSlow" type="button">慢速</button><button class="primary" id="speakTry" type="button">跟讀</button></div>
-        <div class="answers" id="answers"></div><p class="feedback" id="feedback">按「播放」聽題目。</p><p class="speech-result" id="speechResult"></p>
-        <div class="actions"><button class="secondary" id="markHard" type="button">加入弱點</button><button class="primary" id="nextQuestion" type="button">下一題</button></div>
-      </section>
-      <section class="lyrics-panel hidden" id="lyricsPanel">
-        <div class="section-heading"><h2>歌名找歌詞</h2></div>
-        <label class="field-label" for="songTitleInput">歌名或歌手</label><input id="songTitleInput" class="text-input" type="search" placeholder="例：Lemon 米津玄師" />
-        <div class="actions"><button class="secondary" id="clearSong" type="button">清空</button><button class="primary" id="searchLyrics" type="button">搜尋授權歌詞</button></div>
-        <p class="lyrics-note">現代歌曲多數有版權。這裡會幫你找授權歌詞頁或官方來源；若之後接上合法歌詞 API，就能自動把歌詞轉成假名練習。</p>
-        <div class="search-links hidden" id="searchLinks"></div>
-        <label class="field-label" for="lyricsInput">授權歌詞文字</label><textarea id="lyricsInput" rows="6" placeholder="若你有合法來源的歌詞文字，可以貼在這裡轉假名。"></textarea>
-        <button class="primary full" id="convertLyrics" type="button">轉成假名練習</button><div class="lyrics-output" id="lyricsOutput"><p>搜尋結果或轉換後的假名會顯示在這裡。</p></div>
-      </section>
-      <section class="mistakes"><div class="section-heading"><h2>弱點本</h2><button id="clearWeak" type="button">清空</button></div><ul id="weakList"></ul></section>
+      <header class="topbar"><div><p class="eyebrow">JLPT MISSION V8</p><h1>日文任務</h1></div><button class="icon-button" id="homeButton" type="button" aria-label="首頁">家</button></header>
+      <nav class="tabs" aria-label="主要頁面"><button class="active" data-view="dashboard" type="button">首頁</button><button data-view="weakness" type="button">弱點</button><button data-view="stats" type="button">統計</button><button data-view="admin" type="button">檢查</button></nav>
+      <section id="dashboardView" class="view"><section class="hero-panel"><div><p class="eyebrow">今日任務</p><h2 id="missionTitle">N5 · 機場 · 混合模式</h2><p id="missionSummary">先把機場 N5 的核心句型練穩，再擴張到其他場景。</p></div><button class="primary" id="startPractice" type="button">開始練習</button></section><section class="stats-grid" aria-label="學習狀態"><div><strong id="todayDone">0</strong><span>今日題數</span></div><div><strong id="todayRate">--</strong><span>今日答對</span></div><div><strong id="totalDone">0</strong><span>累積題數</span></div><div><strong id="weakCount">0</strong><span>弱點題</span></div></section><section class="settings-panel"><label><span>JLPT 等級</span><select id="levelSelect"><option value="N5">N5</option><option value="N4" disabled>N4（待開放）</option><option value="N3" disabled>N3（待開放）</option><option value="N2" disabled>N2（待開放）</option><option value="N1" disabled>N1（待開放）</option></select></label><label><span>場景</span><select id="sceneSelect"><option value="airport">機場</option></select></label><label><span>測驗模式</span><select id="modeSelect"><option value="mixed">混合模式</option><option value="new">新題模式</option><option value="weak">弱點複習</option></select></label></section><section class="status-panel"><h2>學習狀態</h2><p id="topWeakGrammar">最常錯文法：--</p><p id="topWeakType">最常錯類型：--</p><p id="bankStatus">題庫載入中。</p></section></section>
+      <section id="practiceView" class="view hidden"><section class="practice-head"><div><p class="eyebrow" id="questionMeta">N5 · 機場</p><h2 id="questionType">日文選中文</h2></div><span id="questionProgress">1 / 30</span></section><section class="question-card"><p id="questionInstruction">選出正確答案。</p><h2 id="questionText">トイレはどこですか。</h2><div class="audio-row"><button id="playNormal" type="button">播放</button><button id="playSlow" type="button">慢速</button><button id="speakTry" type="button">跟讀</button></div></section><section id="answerArea" class="answer-area"></section><section id="feedbackPanel" class="feedback-panel hidden"></section><section class="action-row"><button class="secondary" id="unknownButton" type="button">我不懂</button><button class="primary" id="nextButton" type="button">下一題</button></section></section>
+      <section id="weaknessView" class="view hidden"><section class="section-head"><h2>弱點本</h2><button id="reviewWeakButton" type="button">複習弱點</button></section><div id="weaknessList" class="list-panel"></div></section>
+      <section id="statsView" class="view hidden"><section class="section-head"><h2>統計</h2></section><div id="statsDetail" class="list-panel"></div></section>
+      <section id="adminView" class="view hidden"><section class="section-head"><h2>題庫檢查</h2></section><div id="adminReport" class="list-panel"></div></section>
     </main>
     <script src="./app.js"></script>
   </body>
