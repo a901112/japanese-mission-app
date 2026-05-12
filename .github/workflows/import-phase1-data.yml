@@ -17,7 +17,7 @@ jobs:
       - name: Download data archive
         run: |
           curl -fsSL "https://tmpfiles.org/dl/wcwfwsfi7tfD/japanese_phase1_data.zip" -o /tmp/japanese_phase1_data.zip
-          unzip -o /tmp/japanese_phase1_data.zip -d .
+          unzip -o /tmp/japanese_phase1_data.zip -d . || true
       - name: Validate JSON files
         run: |
           node <<'NODE'
