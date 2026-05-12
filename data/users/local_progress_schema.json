@@ -1,0 +1,200 @@
+{
+  "_schema_version": "1.0.0",
+  "_description": "本地進度存儲結構定義（localStorage）。存入 localStorage 時 key 為 'japaneseMissionProgress_v1'。",
+  "_storage_key": "japaneseMissionProgress_v1",
+
+  "user_id": {
+    "_type": "string",
+    "_description": "本地用戶識別碼，首次使用時自動生成 UUID",
+    "_example": "local_user_a1b2c3d4"
+  },
+
+  "display_name": {
+    "_type": "string",
+    "_description": "用戶顯示名稱，可讓用戶自訂",
+    "_example": "學日文的貓咪"
+  },
+
+  "completed_missions": {
+    "_type": "array<string>",
+    "_description": "已完成的 mission id 清單",
+    "_example": ["mission_grammar_ga_wo", "mission_grammar_ni_de_e"]
+  },
+
+  "unlocked_missions": {
+    "_type": "array<string>",
+    "_description": "已解鎖（可進行）的 mission id 清單",
+    "_example": ["mission_grammar_ga_wo", "mission_grammar_ni_de_e", "mission_grammar_cat_reversal"]
+  },
+
+  "mission_progress": {
+    "_type": "object<mission_id, MissionProgress>",
+    "_description": "各任務的進度紀錄",
+    "_structure": {
+      "mission_id": {
+        "status": {
+          "_type": "string",
+          "_values": ["not_started", "in_progress", "completed"],
+          "_description": "任務狀態"
+        },
+        "attempts": {
+          "_type": "number",
+          "_description": "嘗試次數"
+        },
+        "best_score": {
+          "_type": "number",
+          "_description": "最高分（答對題數）"
+        },
+        "last_attempted_at": {
+          "_type": "string (ISO date)",
+          "_description": "最後嘗試日期"
+        },
+        "completed_at": {
+          "_type": "string (ISO date) | null",
+          "_description": "完成日期，未完成則為 null"
+        }
+      }
+    },
+    "_example": {
+      "mission_grammar_ga_wo": {
+        "status": "completed",
+        "attempts": 2,
+        "best_score": 7,
+        "last_attempted_at": "2026-05-12",
+        "completed_at": "2026-05-12"
+      }
+    }
+  },
+
+  "question_history": {
+    "_type": "object<question_id, QuestionHistory>",
+    "_description": "每題的答題歷史",
+    "_structure": {
+      "question_id": {
+        "attempt_count": { "_type": "number", "_description": "總作答次數" },
+        "correct_count": { "_type": "number", "_description": "答對次數" },
+        "last_result": { "_type": "string", "_values": ["correct", "wrong", "unknown"], "_description": "最近一次結果" },
+        "last_attempted_at": { "_type": "string (ISO date)", "_description": "最後作答日期" }
+      }
+    },
+    "_example": {
+      "Q_TSUKU_001": {
+        "attempt_count": 3,
+        "correct_count": 2,
+        "last_result": "correct",
+        "last_attempted_at": "2026-05-12"
+      }
+    }
+  },
+
+  "vocabulary_progress": {
+    "_type": "object<vocab_id, VocabProgress>",
+    "_description": "單字學習進度",
+    "_structure": {
+      "vocab_id": {
+        "status": {
+          "_type": "string",
+          "_values": ["new", "learning", "familiar", "mastered"],
+          "_description": "學習狀態"
+        },
+        "correct_streak": {
+          "_type": "number",
+          "_description": "連續答對次數"
+        },
+        "review_count": {
+          "_type": "number",
+          "_description": "複習次數"
+        },
+        "last_reviewed_at": {
+          "_type": "string (ISO date)",
+          "_description": "最後複習日期"
+        }
+      }
+    },
+    "_example": {
+      "vocab_neko": {
+        "status": "mastered",
+        "correct_streak": 5,
+        "review_count": 8,
+        "last_reviewed_at": "2026-05-12"
+      }
+    }
+  },
+
+  "weakness_tags": {
+    "_type": "object<tag, WeaknessRecord>",
+    "_description": "弱點標籤記錄，對應 question.weakness_tags，與現有 app.js 的 weaknesses 結構相容",
+    "_structure": {
+      "tag": {
+        "weakness_id": { "_type": "string", "_description": "弱點 ID，格式 weak_{tag}" },
+        "user_id": { "_type": "string", "_description": "用戶 ID" },
+        "engine": { "_type": "string", "_description": "出題引擎" },
+        "wrong_type": { "_type": "string", "_description": "錯誤概念 ID" },
+        "weakness_tags": { "_type": "array<string>", "_description": "相關弱點標籤" },
+        "wrong_count": { "_type": "number", "_description": "累計答錯次數" },
+        "correct_streak": { "_type": "number", "_description": "連續答對次數，達 3 則 mastered" },
+        "status": { "_type": "string", "_values": ["weak", "improving", "mastered"], "_description": "掌握狀態" },
+        "wrong_answer": { "_type": "string", "_description": "最近答錯時選的選項" },
+        "correct_answer": { "_type": "string", "_description": "正確答案" },
+        "explanation": { "_type": "string", "_description": "解析文字" }
+      }
+    },
+    "_example": {
+      "つく_vs_つける": {
+        "weakness_id": "weak_つく_vs_つける",
+        "user_id": "local_user_a1b2c3d4",
+        "engine": "verb_sense",
+        "wrong_type": "tsuku_light_state",
+        "weakness_tags": ["つく_vs_つける"],
+        "wrong_count": 2,
+        "correct_streak": 1,
+        "status": "weak",
+        "wrong_answer": "電気をつける",
+        "correct_answer": "電気がつく",
+        "explanation": "つく 是自動詞，燈自己亮起來；つける 是他動詞，人去把燈打開。"
+      }
+    }
+  },
+
+  "daily_stats": {
+    "_type": "object<date_string, DailyStats>",
+    "_description": "每日學習統計，key 格式為 YYYY-MM-DD",
+    "_structure": {
+      "date": {
+        "total": { "_type": "number", "_description": "當日作答總題數" },
+        "correct": { "_type": "number", "_description": "當日答對題數" },
+        "missions_attempted": { "_type": "array<string>", "_description": "當日嘗試的任務 ID" },
+        "study_minutes": { "_type": "number", "_description": "預估學習分鐘數" }
+      }
+    },
+    "_example": {
+      "2026-05-12": {
+        "total": 20,
+        "correct": 16,
+        "missions_attempted": ["mission_grammar_ga_wo"],
+        "study_minutes": 15
+      }
+    }
+  },
+
+  "last_practice_date": {
+    "_type": "string (ISO date) | null",
+    "_description": "最後練習日期，用於連續學習天數計算",
+    "_example": "2026-05-12"
+  },
+
+  "_legacy_compat": {
+    "_description": "與現有 STORE_KEY='japaneseSenseTrainerV2' 的 app.js 相容欄位，不可刪除",
+    "today": {
+      "date": { "_type": "string", "_description": "今日日期 YYYY-MM-DD" },
+      "total": { "_type": "number" },
+      "correct": { "_type": "number" }
+    },
+    "total": { "_type": "number", "_description": "累計總作答題數" },
+    "correct": { "_type": "number", "_description": "累計總答對題數" },
+    "weaknesses": {
+      "_type": "object",
+      "_description": "直接對應 app.js 的 state.progress.weaknesses，格式與 weakness_tags 一致"
+    }
+  }
+}

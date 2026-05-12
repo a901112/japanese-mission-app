@@ -1,0 +1,73 @@
+[
+  {
+    "id": "path_fun_grammar",
+    "title": "有趣的日文語感任務",
+    "description": "從助詞開始，到被動、使役、自他動詞、知覺動詞——按語感難度層層遞進，打造真正理解日語「為什麼這樣說」的直覺。",
+    "type": "grammar",
+    "level_range": { "min": "N5", "max": "N4" },
+    "mission_ids": [
+      "mission_grammar_ga_wo",
+      "mission_grammar_ni_de_e",
+      "mission_grammar_cat_reversal",
+      "mission_grammar_passive",
+      "mission_grammar_causative",
+      "mission_verb_jido_tado",
+      "mission_verb_teiru",
+      "mission_verb_tearu",
+      "mission_verb_miru",
+      "mission_verb_kiku"
+    ],
+    "recommended_daily_questions": 10,
+    "estimated_minutes_per_day": 15,
+    "badge": "🧠",
+    "tagline": "不是背文法，是練語感"
+  },
+  {
+    "id": "path_vocabulary_basic",
+    "title": "基礎單字任務",
+    "description": "從動物、水果、時間開始，系統性建立N5核心單字庫。每個單字都綁定使用情境，不死背、用場景記。",
+    "type": "vocabulary",
+    "level_range": { "min": "N5", "max": "N5" },
+    "mission_ids": [
+      "mission_vocab_animals_001",
+      "mission_vocab_fruits_001",
+      "mission_vocab_time_001",
+      "mission_vocab_colors_001",
+      "mission_vocab_verb_001",
+      "mission_vocab_noun_001"
+    ],
+    "recommended_daily_questions": 10,
+    "estimated_minutes_per_day": 10,
+    "badge": "📚",
+    "tagline": "用情境記單字，不靠死背"
+  },
+  {
+    "id": "path_audio_sense",
+    "title": "聽覺語感任務",
+    "description": "訓練你聽日文的直覺，分辨音聲細微差異。從燈光到門，聽到句子就能感受語感，不靠翻譯。",
+    "type": "listening",
+    "level_range": { "min": "N5", "max": "N4" },
+    "mission_ids": [
+      "mission_audio_tsuku",
+      "mission_audio_aku",
+      "mission_audio_miru_kiku"
+    ],
+    "recommended_daily_questions": 10,
+    "estimated_minutes_per_day": 12,
+    "badge": "👂",
+    "tagline": "聽了就懂，不靠翻譯"
+  },
+  {
+    "id": "path_weakness_review",
+    "title": "弱點複習任務",
+    "description": "根據你的答題紀錄，自動抽出最常出錯的概念，針對性出題，直到連續答對3題才算掌握。",
+    "type": "review",
+    "level_range": { "min": "N5", "max": "N3" },
+    "mission_ids": [],
+    "recommended_daily_questions": 10,
+    "estimated_minutes_per_day": 10,
+    "badge": "🔁",
+    "tagline": "錯過的，再來一次",
+    "note": "此路線由系統根據 weakness_tags 動態生成，無固定 mission_ids"
+  }
+]

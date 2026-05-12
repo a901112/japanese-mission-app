@@ -1,0 +1,173 @@
+[
+  {
+    "id": "cat_noun_common",
+    "title": "常用名詞",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "日常生活最常使用的名詞，從人物、物品到抽象概念。",
+    "icon": "📝",
+    "mission_ids": ["mission_vocab_noun_001"]
+  },
+  {
+    "id": "cat_verb_common",
+    "title": "常用動詞",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "最高頻率的動作動詞，包含飲食、移動、感官、創作等基礎動詞。",
+    "icon": "🏃",
+    "mission_ids": ["mission_vocab_verb_001"]
+  },
+  {
+    "id": "cat_time",
+    "title": "時間",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "表達時間的詞彙，包含今昔、早晚、星期、月份等。",
+    "icon": "🕐",
+    "mission_ids": ["mission_vocab_time_001"]
+  },
+  {
+    "id": "cat_numbers",
+    "title": "數字",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "日語數字系統，包含和語數字、漢語數字的使用場合。",
+    "icon": "🔢",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_counters",
+    "title": "量詞",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "日語各種量詞（助數詞），如本、枚、匹、台等，搭配不同物品使用。",
+    "icon": "📏",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_colors",
+    "title": "顏色",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "基本色彩詞彙，部分顏色在日語中有特殊的形容詞形態。",
+    "icon": "🎨",
+    "mission_ids": ["mission_vocab_colors_001"]
+  },
+  {
+    "id": "cat_fruits",
+    "title": "水果",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "常見水果名稱，部分為外來語，部分為漢字。",
+    "icon": "🍎",
+    "mission_ids": ["mission_vocab_fruits_001"]
+  },
+  {
+    "id": "cat_animals",
+    "title": "動物",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "常見動物名稱，包含寵物、野生動物與農場動物。",
+    "icon": "🐾",
+    "mission_ids": ["mission_vocab_animals_001"]
+  },
+  {
+    "id": "cat_food",
+    "title": "食物",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "日常飲食相關詞彙，包含日本特色食物與常見食材。",
+    "icon": "🍜",
+    "mission_ids": ["mission_vocab_food_001"]
+  },
+  {
+    "id": "cat_family",
+    "title": "家庭",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "家庭成員稱謂，注意日語有「謙稱自家人、尊稱別人家人」的重要區別。",
+    "icon": "👨‍👩‍👧‍👦",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_transport",
+    "title": "交通",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "交通工具與交通相關詞彙，含車、電車、飛機、船等。",
+    "icon": "🚃",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_places",
+    "title": "地點",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "常見地點與場所名稱，包含學校、店家、公共設施等。",
+    "icon": "📍",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_weather",
+    "title": "天氣",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "天氣相關詞彙與表達，日本四季分明，天氣話題是日常對話重要主題。",
+    "icon": "🌤️",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_emotions",
+    "title": "感情",
+    "type": "vocabulary",
+    "level": "N4",
+    "description": "表達情感與心理狀態的詞彙，幫助更細緻表達內心世界。",
+    "icon": "💭",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_travel",
+    "title": "旅行",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "旅行相關詞彙，從訂房、交通到觀光景點，實用度極高。",
+    "icon": "✈️",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_restaurant",
+    "title": "餐廳",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "餐廳用餐相關詞彙，包含點菜、結帳、日本特色用餐文化。",
+    "icon": "🍽️",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_shopping",
+    "title": "購物",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "購物相關詞彙，包含數字金額、詢問價格、討價還價等實用情境。",
+    "icon": "🛍️",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_school",
+    "title": "學校",
+    "type": "vocabulary",
+    "level": "N5",
+    "description": "學校環境與學習相關詞彙，科目、文具、校園設施等。",
+    "icon": "🏫",
+    "mission_ids": []
+  },
+  {
+    "id": "cat_work",
+    "title": "工作",
+    "type": "vocabulary",
+    "level": "N4",
+    "description": "職場相關詞彙，包含職稱、辦公室用語、商務基礎表達。",
+    "icon": "💼",
+    "mission_ids": []
+  }
+]
