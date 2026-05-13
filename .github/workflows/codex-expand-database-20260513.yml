@@ -1,0 +1,84 @@
+name: Codex expand learning database
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/codex-expand-database-20260513.yml
+
+permissions:
+  contents: write
+
+jobs:
+  expand-database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download expanded database files
+        run: |
+          set -euo pipefail
+          curl -L "https://tmpfiles.org/dl/wwwPwzcRzqNe/jma-db-expand.zip" -o /tmp/jma-db-expand.zip
+          unzip -o /tmp/jma-db-expand.zip -d .
+      - name: Validate database JSON and references
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('.')
+          files = [
+              'knowledge_points.json',
+              'vocabulary_categories.json',
+              'vocabulary_items.json',
+              'missions.json',
+              'mission_paths.json',
+              'data/knowledge/knowledge_points.json',
+              'data/vocabulary/vocabulary_categories.json',
+              'data/vocabulary/vocabulary_items.json',
+              'data/missions/missions.json',
+              'data/missions/mission_paths.json',
+          ]
+          data = {}
+          for file in files:
+              data[file] = json.loads((root / file).read_text(encoding='utf-8'))
+          counts = {
+              'knowledge': len(data['data/knowledge/knowledge_points.json']),
+              'categories': len(data['data/vocabulary/vocabulary_categories.json']),
+              'vocabulary': len(data['data/vocabulary/vocabulary_items.json']),
+              'missions': len(data['data/missions/missions.json']),
+              'paths': len(data['data/missions/mission_paths.json']),
+          }
+          assert counts == {'knowledge': 22, 'categories': 20, 'vocabulary': 142, 'missions': 28, 'paths': 5}, counts
+          assert data['knowledge_points.json'] == data['data/knowledge/knowledge_points.json']
+          assert data['vocabulary_categories.json'] == data['data/vocabulary/vocabulary_categories.json']
+          assert data['vocabulary_items.json'] == data['data/vocabulary/vocabulary_items.json']
+          assert data['missions.json'] == data['data/missions/missions.json']
+          assert data['mission_paths.json'] == data['data/missions/mission_paths.json']
+          kp = {x['id'] for x in data['data/knowledge/knowledge_points.json']}
+          cats = {x['id'] for x in data['data/vocabulary/vocabulary_categories.json']}
+          missions = {x['id'] for x in data['data/missions/missions.json']}
+          errors = []
+          for mission in data['data/missions/missions.json']:
+              for kid in mission.get('knowledge_point_ids', []):
+                  if kid not in kp: errors.append(f"mission {mission['id']} missing kp {kid}")
+              for cid in mission.get('vocabulary_category_ids', []):
+                  if cid not in cats: errors.append(f"mission {mission['id']} missing category {cid}")
+          for item in data['data/vocabulary/vocabulary_items.json']:
+              for cid in item.get('categories', []):
+                  if cid not in cats: errors.append(f"vocab {item['id']} missing category {cid}")
+              for kid in item.get('related_knowledge_points', []):
+                  if kid not in kp: errors.append(f"vocab {item['id']} missing kp {kid}")
+          for path in data['data/missions/mission_paths.json']:
+              for mid in path.get('mission_ids', []):
+                  if mid not in missions: errors.append(f"path {path['id']} missing mission {mid}")
+          if errors:
+              raise SystemExit('\n'.join(errors[:50]))
+          print(counts)
+          PY
+      - name: Commit expanded database
+        run: |
+          set -euo pipefail
+          git config user.name "codex-agent"
+          git config user.email "codex-agent@users.noreply.github.com"
+          git add knowledge_points.json vocabulary_categories.json vocabulary_items.json missions.json mission_paths.json data/knowledge/knowledge_points.json data/vocabulary/vocabulary_categories.json data/vocabulary/vocabulary_items.json data/missions/missions.json data/missions/mission_paths.json
+          git commit -m "feat: expand learning database for first-hour study" || exit 0
+          git push origin main
