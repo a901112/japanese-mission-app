@@ -30,55 +30,84 @@
 
       <section id="homeView" class="view">
 
-        <!-- 快速練習模組 -->
+        <!-- 學習入口 -->
         <section class="section-block">
-          <h2 class="section-label">快速練習</h2>
-          <section class="module-grid" aria-label="訓練模組">
-            <button class="module-card" data-start="grammar_arrangement" type="button">
-              <strong>語法排列</strong>
-              <span>同樣單字，改變助詞和排列，意思就改變。</span>
+          <h2 class="section-label">選擇學習內容</h2>
+          <section class="content-switch" aria-label="學習內容">
+            <button class="content-card active" data-home-type="grammar" type="button">
+              <strong>文法</strong>
+              <span>助詞、句型、自他動詞、語感任務</span>
             </button>
-            <button class="module-card" data-start="verb_sense" type="button">
-              <strong>動詞語感</strong>
-              <span>見る、見える、見せる 差在哪裡。</span>
-            </button>
-            <button class="module-card" data-start="weak_review" type="button">
-              <strong>弱點複習</strong>
-              <span>針對常錯概念重新出變體題。</span>
-            </button>
-            <button class="module-card" data-start="audio_sense" type="button">
-              <strong>聽覺語感</strong>
-              <span>聽句子、聽最小差異，答後跟讀。</span>
+            <button class="content-card" data-home-type="vocabulary" type="button">
+              <strong>單詞</strong>
+              <span>依主題分類，搭配例句和情境記憶</span>
             </button>
           </section>
         </section>
 
-        <!-- 篩選器 -->
-        <section class="filter-panel">
-          <label><span>JLPT</span>
-            <select id="jlptFilter">
-              <option value="all">全部</option>
-              <option value="N5">N5</option>
-              <option value="N4">N4</option>
-              <option value="N3">N3</option>
-            </select>
-          </label>
-          <label><span>場景</span>
-            <select id="sceneFilter">
-              <option value="all">全部</option>
-              <option value="daily">日常</option>
-              <option value="travel">旅行</option>
-              <option value="school">學校</option>
-              <option value="work">公司</option>
-            </select>
-          </label>
+        <section id="grammarHomePanel">
+          <!-- 篩選器 -->
+          <section class="filter-panel">
+            <label><span>JLPT</span>
+              <select id="jlptFilter">
+                <option value="all">全部</option>
+                <option value="N5">N5</option>
+                <option value="N4">N4</option>
+                <option value="N3">N3</option>
+              </select>
+            </label>
+            <label><span>場景</span>
+              <select id="sceneFilter">
+                <option value="all">全部</option>
+                <option value="daily">日常</option>
+                <option value="travel">旅行</option>
+                <option value="school">學校</option>
+                <option value="work">公司</option>
+              </select>
+            </label>
+          </section>
+
+          <!-- 文法細項 -->
+          <section class="section-block">
+            <h2 class="section-label">文法細項</h2>
+            <section class="module-grid" aria-label="文法練習模組">
+              <button class="module-card" data-start="grammar_arrangement" type="button">
+                <strong>語法排列</strong>
+                <span>同樣單字，改變助詞和排列，意思就改變。</span>
+              </button>
+              <button class="module-card" data-start="verb_sense" type="button">
+                <strong>動詞語感</strong>
+                <span>見る、見える、見せる 差在哪裡。</span>
+              </button>
+              <button class="module-card" data-start="weak_review" type="button">
+                <strong>弱點複習</strong>
+                <span>針對常錯概念重新出變體題。</span>
+              </button>
+              <button class="module-card" data-start="audio_sense" type="button">
+                <strong>聽覺語感</strong>
+                <span>聽句子、聽最小差異，答後跟讀。</span>
+              </button>
+            </section>
+          </section>
+
+          <!-- 任務關卡 -->
+          <section class="section-block">
+            <h2 class="section-label">文法任務關卡</h2>
+            <p class="section-desc">按順序解鎖，每關都有記憶口訣與語感解析。</p>
+            <div id="missionGrid" class="mission-grid"></div>
+          </section>
         </section>
 
-        <!-- 任務關卡 -->
-        <section class="section-block">
-          <h2 class="section-label">語感任務關卡</h2>
-          <p class="section-desc">按順序解鎖，每關都有記憶口訣與語感解析。</p>
-          <div id="missionGrid" class="mission-grid"></div>
+        <section id="vocabularyHomePanel" class="hidden">
+          <section class="section-block">
+            <h2 class="section-label">單詞分類</h2>
+            <p class="section-desc">先選主題，再看這組單字的讀音、意思和例句。</p>
+            <div id="vocabularyGrid" class="vocabulary-grid"></div>
+          </section>
+          <section class="section-block">
+            <h2 class="section-label">單詞清單</h2>
+            <div id="vocabularyList" class="vocabulary-list"></div>
+          </section>
         </section>
 
         <!-- 題庫狀態 -->

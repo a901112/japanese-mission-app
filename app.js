@@ -20,6 +20,10 @@ const state = {
   missions: [],
   missionPaths: [],
   knowledgePoints: [],
+  vocabularyCategories: [],
+  vocabularyItems: [],
+  homeType: "grammar",
+  selectedVocabCategory: null,
   currentView: "home"
 };
 
@@ -55,14 +59,19 @@ async function loadBank() {
 }
 
 async function loadMissionData() {
-  const [missions, paths, kps] = await Promise.all([
+  const [missions, paths, kps, vocabCategories, vocabItems] = await Promise.all([
     fetchJson("./data/missions/missions.json"),
     fetchJson("./data/missions/mission_paths.json"),
-    fetchJson("./data/knowledge/knowledge_points.json")
+    fetchJson("./data/knowledge/knowledge_points.json"),
+    fetchJson("./data/vocabulary/vocabulary_categories.json"),
+    fetchJson("./data/vocabulary/vocabulary_items.json")
   ]);
   state.missions = missions;
   state.missionPaths = paths;
   state.knowledgePoints = kps;
+  state.vocabularyCategories = vocabCategories;
+  state.vocabularyItems = vocabItems;
+  state.selectedVocabCategory = vocabCategories[0]?.id || null;
   syncMissionUnlocks();
 }
 
@@ -96,6 +105,18 @@ function bindEvents() {
   document.querySelectorAll("[data-start]").forEach((button) => {
     button.addEventListener("click", () => startPractice(button.dataset.start));
   });
+  document.querySelectorAll("[data-home-type]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.homeType = button.dataset.homeType;
+      renderHome();
+    });
+  });
+  $("#vocabularyGrid")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-vocab-category]");
+    if (!button) return;
+    state.selectedVocabCategory = button.dataset.vocabCategory;
+    renderVocabulary();
+  });
   $("#jlptFilter").addEventListener("change", renderHome);
   $("#sceneFilter").addEventListener("change", renderHome);
   $("#backHome").addEventListener("click", () => showView("home"));
@@ -128,7 +149,13 @@ function renderHome() {
     ? `Published 題庫：${state.questions.length} 題；目前篩選可練 ${filtered.length} 題。`
     : "目前沒有通過審核的題目，請先建立 published 題庫。";
   $("#policyStatus").textContent = "答題前依 audio_policy 控制發音；非聽力題不播放完整正解句，答題後才開放正解與慢速。";
+  document.querySelectorAll("[data-home-type]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.homeType === state.homeType);
+  });
+  $("#grammarHomePanel").classList.toggle("hidden", state.homeType !== "grammar");
+  $("#vocabularyHomePanel").classList.toggle("hidden", state.homeType !== "vocabulary");
   renderMissions();
+  renderVocabulary();
 }
 
 function renderMissions() {
@@ -136,8 +163,9 @@ function renderMissions() {
   if (!container || !state.missions.length) return;
 
   const mp = state.missionProgress;
+  const missions = state.missions.filter((mission) => mission.type === "grammar");
 
-  container.innerHTML = state.missions.map((mission) => {
+  container.innerHTML = missions.map((mission) => {
     const prog = mp.mission_progress[mission.id] || {};
     const isUnlocked = mp.unlocked_missions.includes(mission.id);
     const isCompleted = mp.completed_missions.includes(mission.id);
@@ -172,6 +200,52 @@ function renderMissions() {
       </button>
     `;
   }).join("");
+}
+
+function renderVocabulary() {
+  const grid = $("#vocabularyGrid");
+  const list = $("#vocabularyList");
+  if (!grid || !list) return;
+  if (!state.vocabularyCategories.length) {
+    grid.innerHTML = `<div class="list-item">目前沒有單詞分類資料。</div>`;
+    list.innerHTML = "";
+    return;
+  }
+
+  if (!state.selectedVocabCategory) {
+    state.selectedVocabCategory = state.vocabularyCategories[0].id;
+  }
+
+  grid.innerHTML = state.vocabularyCategories.map((category) => {
+    const count = state.vocabularyItems.filter((item) => (item.categories || []).includes(category.id)).length;
+    const active = category.id === state.selectedVocabCategory;
+    return `
+      <button class="vocab-card ${active ? "active" : ""}" data-vocab-category="${escapeHtml(category.id)}" type="button">
+        <span class="vocab-icon">${escapeHtml(category.icon || "□")}</span>
+        <strong>${escapeHtml(category.title)}</strong>
+        <small>${escapeHtml(category.level || "")} · ${count} 個單字</small>
+      </button>
+    `;
+  }).join("");
+
+  const category = state.vocabularyCategories.find((item) => item.id === state.selectedVocabCategory);
+  const words = state.vocabularyItems.filter((item) => (item.categories || []).includes(state.selectedVocabCategory));
+  list.innerHTML = words.length ? `
+    <div class="vocab-list-head">
+      <strong>${escapeHtml(category?.title || "單詞")}</strong>
+      <span>${words.length} 個單字</span>
+    </div>
+    ${words.map((word) => `
+      <div class="vocab-item">
+        <div>
+          <strong>${escapeHtml(word.jp)}</strong>
+          <span>${escapeHtml(word.kana || "")}</span>
+        </div>
+        <p>${escapeHtml(word.zh || "")}</p>
+        <small>${escapeHtml(word.example?.jp || "")}${word.example_zh ? " / " + escapeHtml(word.example_zh) : ""}</small>
+      </div>
+    `).join("")}
+  ` : `<div class="list-item">這個分類目前還沒有單字。</div>`;
 }
 
 // ─── Mission 系統 ─────────────────────────────────────────

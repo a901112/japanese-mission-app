@@ -76,6 +76,41 @@ h2 { margin-bottom: 8px; font-size: 22px; line-height: 1.25; }
 }
 
 /* ── 快速練習模組 ── */
+.content-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.content-card {
+  min-height: 96px;
+  padding: 16px;
+  text-align: left;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.content-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--accent-dark);
+  font-size: 22px;
+}
+.content-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.content-card.active {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.content-card.active strong,
+.content-card.active span {
+  color: #fff;
+}
+
 .module-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -218,6 +253,92 @@ h2 { margin-bottom: 8px; font-size: 22px; line-height: 1.25; }
   color: var(--locked);
 }
 
+/* ── Vocabulary ── */
+.vocabulary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.vocab-card {
+  min-height: 86px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  row-gap: 2px;
+  text-align: left;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.vocab-card.active {
+  border-color: var(--accent);
+  background: var(--soft);
+}
+.vocab-icon {
+  grid-row: 1 / 3;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 18px;
+}
+.vocab-card strong {
+  color: var(--accent-dark);
+  font-size: 15px;
+  line-height: 1.25;
+}
+.vocab-card small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.vocabulary-list {
+  display: grid;
+  gap: 8px;
+}
+.vocab-list-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+.vocab-list-head strong { color: var(--ink); }
+.vocab-list-head span { color: var(--muted); font-size: 12px; font-weight: 800; }
+.vocab-item {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+.vocab-item div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.vocab-item strong {
+  color: var(--ink);
+  font-size: 20px;
+}
+.vocab-item span,
+.vocab-item small {
+  color: var(--muted);
+  font-weight: 700;
+}
+.vocab-item p {
+  margin: 5px 0 4px;
+  color: var(--accent-dark);
+  font-weight: 900;
+}
+
 /* ── Status Panel ── */
 .status-panel {
   padding: 14px;
@@ -343,7 +464,7 @@ h2 { margin-bottom: 8px; font-size: 22px; line-height: 1.25; }
 @media (max-width: 430px) {
   .app-shell { padding-left: 12px; padding-right: 12px; }
   h1 { font-size: 24px; }
-  .filter-panel, .module-grid { grid-template-columns: 1fr; }
+  .filter-panel, .module-grid, .content-switch, .vocabulary-grid { grid-template-columns: 1fr; }
   .tabs button { padding: 0 6px; font-size: 13px; }
   .practice-head { grid-template-columns: 1fr auto; }
   .practice-head .ghost { grid-column: 1 / -1; }
