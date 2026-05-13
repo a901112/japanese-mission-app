@@ -28,10 +28,17 @@ jobs:
           PY
           file /tmp/jma-db-expand.zip
           python - <<'PY'
+          from pathlib import Path
           import zipfile
           z = zipfile.ZipFile('/tmp/jma-db-expand.zip')
-          print(z.namelist())
-          z.extractall('.')
+          for info in z.infolist():
+              name = info.filename.replace('\\', '/')
+              if name.endswith('/'):
+                  continue
+              target = Path(name)
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(z.read(info))
+              print('extracted', target)
           PY
       - name: Validate database JSON and references
         run: |
