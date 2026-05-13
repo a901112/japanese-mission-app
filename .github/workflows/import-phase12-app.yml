@@ -1,0 +1,49 @@
+name: Import Phase 1+2 app files
+
+on:
+  push:
+    paths:
+      - ".github/workflows/import-phase12-app.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-phase12-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download app archive
+        run: |
+          curl -fsSL "https://tmpfiles.org/dl/w3wdwDXs99Ug/japanese_phase12_app.zip" -o /tmp/japanese_phase12_app.zip
+          unzip -o /tmp/japanese_phase12_app.zip -d . || true
+      - name: Validate files
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const files = [
+            'app.js',
+            'index.html',
+            'styles.css',
+            'data/missions/missions.json',
+            'data/missions/mission_paths.json',
+            'data/knowledge/knowledge_points.json',
+            'data/vocabulary/vocabulary_items.json',
+            'data/vocabulary/vocabulary_categories.json',
+            'data/users/local_progress_schema.json'
+          ];
+          for (const file of files) {
+            if (!fs.existsSync(file)) throw new Error(`Missing ${file}`);
+            const raw = fs.readFileSync(file, 'utf8');
+            if (file.endsWith('.json')) JSON.parse(raw);
+            console.log(`${file}: ok (${raw.length} chars)`);
+          }
+          NODE
+      - name: Commit app and data files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js index.html styles.css data/
+          git commit -m "feat: Phase 1+2 complete — mission system, knowledge points, vocabulary data" || exit 0
+          git push origin main
