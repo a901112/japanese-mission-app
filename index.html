@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#1e6f62" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="語感訓練" />
-    <title>Japanese Sense Trainer V2</title>
+    <meta name="apple-mobile-web-app-title" content="日文任務" />
+    <title>Japanese Mission App</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./icon.svg" />
     <link rel="stylesheet" href="./styles.css" />
@@ -16,52 +16,130 @@
     <main class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Japanese Sense Trainer V2</p>
-          <h1>今天要訓練哪一種日文語感？</h1>
+          <p class="eyebrow">Japanese Mission App</p>
+          <h1>日文語感任務平台</h1>
         </div>
       </header>
 
       <nav class="tabs" aria-label="主要頁面">
-        <button class="active" data-view="home" type="button">訓練</button>
+        <button class="active" data-view="home" type="button">任務</button>
         <button data-view="weakness" type="button">弱點</button>
         <button data-view="stats" type="button">統計</button>
         <button data-view="debug" type="button">Debug</button>
       </nav>
 
       <section id="homeView" class="view">
-        <section class="hero-panel">
+
+        <!-- 快速練習模組 -->
+        <section class="section-block">
+          <h2 class="section-label">快速練習</h2>
+          <section class="module-grid" aria-label="訓練模組">
+            <button class="module-card" data-start="grammar_arrangement" type="button">
+              <strong>語法排列</strong>
+              <span>同樣單字，改變助詞和排列，意思就改變。</span>
+            </button>
+            <button class="module-card" data-start="verb_sense" type="button">
+              <strong>動詞語感</strong>
+              <span>見る、見える、見せる 差在哪裡。</span>
+            </button>
+            <button class="module-card" data-start="weak_review" type="button">
+              <strong>弱點複習</strong>
+              <span>針對常錯概念重新出變體題。</span>
+            </button>
+            <button class="module-card" data-start="audio_sense" type="button">
+              <strong>聽覺語感</strong>
+              <span>聽句子、聽最小差異，答後跟讀。</span>
+            </button>
+          </section>
+        </section>
+
+        <!-- 篩選器 -->
+        <section class="filter-panel">
+          <label><span>JLPT</span>
+            <select id="jlptFilter">
+              <option value="all">全部</option>
+              <option value="N5">N5</option>
+              <option value="N4">N4</option>
+              <option value="N3">N3</option>
+            </select>
+          </label>
+          <label><span>場景</span>
+            <select id="sceneFilter">
+              <option value="all">全部</option>
+              <option value="daily">日常</option>
+              <option value="travel">旅行</option>
+              <option value="school">學校</option>
+              <option value="work">公司</option>
+            </select>
+          </label>
+        </section>
+
+        <!-- 任務關卡 -->
+        <section class="section-block">
+          <h2 class="section-label">語感任務關卡</h2>
+          <p class="section-desc">按順序解鎖，每關都有記憶口訣與語感解析。</p>
+          <div id="missionGrid" class="mission-grid"></div>
+        </section>
+
+        <!-- 題庫狀態 -->
+        <section class="status-panel">
+          <h2>題庫狀態</h2>
+          <p id="bankStatus">題庫載入中。</p>
+          <p id="policyStatus">Audio Policy 載入中。</p>
+        </section>
+
+      </section>
+
+      <!-- 練習頁 -->
+      <section id="practiceView" class="view hidden">
+        <section class="practice-head">
+          <button class="ghost" id="backHome" type="button">返回</button>
           <div>
-            <p class="eyebrow">語感訓練中心</p>
-            <h2>不是背題庫，是練「為什麼這句要這樣排」。</h2>
-            <p>JLPT 與情境現在只是篩選器，主入口改成語法排列、動詞語感、弱點複習、聽覺語感。</p>
+            <p class="eyebrow" id="questionMeta">語感訓練</p>
+            <h2 id="questionType">語法排列</h2>
+          </div>
+          <span id="questionProgress">1 / 10</span>
+        </section>
+        <section class="question-card">
+          <p id="questionInstruction">請作答。</p>
+          <h2 id="questionText"></h2>
+          <div id="tokenArea" class="token-area"></div>
+          <div id="buildArea" class="build-area hidden"></div>
+          <div class="audio-row">
+            <button id="playBefore" type="button">題目前音</button>
+            <button id="playAnswer" type="button" disabled>正解</button>
+            <button id="playSlow" type="button" disabled>慢速</button>
           </div>
         </section>
-
-        <section class="filter-panel">
-          <label><span>JLPT Filter</span><select id="jlptFilter"><option value="all">全部</option><option value="N5">N5</option><option value="N4">N4</option><option value="N3">N3</option></select></label>
-          <label><span>Scene Filter</span><select id="sceneFilter"><option value="all">全部</option><option value="daily">日常</option><option value="travel">旅行</option><option value="school">學校</option><option value="work">公司</option></select></label>
+        <section id="answerArea" class="answer-area"></section>
+        <section id="feedbackPanel" class="feedback-panel hidden"></section>
+        <section class="action-row">
+          <button class="secondary" id="unknownButton" type="button">我不懂</button>
+          <button class="primary" id="nextButton" type="button">下一題</button>
         </section>
-
-        <section class="module-grid" aria-label="訓練模組">
-          <button class="module-card" data-start="grammar_arrangement" type="button"><strong>語法排列</strong><span>同樣單字，改變助詞和排列，意思就改變。</span></button>
-          <button class="module-card" data-start="verb_sense" type="button"><strong>動詞語感</strong><span>見る、見える、見せる、見られる差在哪裡。</span></button>
-          <button class="module-card" data-start="weak_review" type="button"><strong>弱點複習</strong><span>針對常錯概念重新出變體題。</span></button>
-          <button class="module-card" data-start="audio_sense" type="button"><strong>聽覺語感</strong><span>聽句子、聽最小差異，答後跟讀。</span></button>
-        </section>
-
-        <section class="status-panel"><h2>題庫狀態</h2><p id="bankStatus">題庫載入中。</p><p id="policyStatus">Audio Policy 載入中。</p></section>
       </section>
 
-      <section id="practiceView" class="view hidden">
-        <section class="practice-head"><button class="ghost" id="backHome" type="button">返回</button><div><p class="eyebrow" id="questionMeta">語感訓練</p><h2 id="questionType">語法排列</h2></div><span id="questionProgress">1 / 10</span></section>
-        <section class="question-card"><p id="questionInstruction">請作答。</p><h2 id="questionText"></h2><div id="tokenArea" class="token-area"></div><div id="buildArea" class="build-area hidden"></div><div class="audio-row"><button id="playBefore" type="button">題目前音</button><button id="playAnswer" type="button" disabled>正解</button><button id="playSlow" type="button" disabled>慢速</button></div></section>
-        <section id="answerArea" class="answer-area"></section><section id="feedbackPanel" class="feedback-panel hidden"></section>
-        <section class="action-row"><button class="secondary" id="unknownButton" type="button">我不懂</button><button class="primary" id="nextButton" type="button">下一題</button></section>
+      <!-- 弱點頁 -->
+      <section id="weaknessView" class="view hidden">
+        <section class="section-head">
+          <h2>弱點本</h2>
+          <button id="reviewWeakButton" type="button">練 10 題</button>
+        </section>
+        <div id="weaknessList" class="list-panel"></div>
       </section>
 
-      <section id="weaknessView" class="view hidden"><section class="section-head"><h2>弱點本</h2><button id="reviewWeakButton" type="button">練 10 題</button></section><div id="weaknessList" class="list-panel"></div></section>
-      <section id="statsView" class="view hidden"><section class="section-head"><h2>統計</h2></section><div id="statsDetail" class="list-panel"></div></section>
-      <section id="debugView" class="view hidden"><section class="section-head"><h2>題庫管理 / Debug</h2></section><div id="debugReport" class="list-panel"></div></section>
+      <!-- 統計頁 -->
+      <section id="statsView" class="view hidden">
+        <section class="section-head"><h2>統計</h2></section>
+        <div id="statsDetail" class="list-panel"></div>
+      </section>
+
+      <!-- Debug 頁 -->
+      <section id="debugView" class="view hidden">
+        <section class="section-head"><h2>題庫管理 / Debug</h2></section>
+        <div id="debugReport" class="list-panel"></div>
+      </section>
+
     </main>
     <script src="./app.js"></script>
   </body>

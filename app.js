@@ -1,6 +1,8 @@
-const APP_VERSION = "Japanese Sense Trainer V2";
+const APP_VERSION = "Japanese Mission App V3";
 const STORE_KEY = "japaneseSenseTrainerV2";
+const MISSION_STORE_KEY = "japaneseMissionProgress_v1";
 const RAW_QUESTION_BASE = "https://raw.githubusercontent.com/a901112/japanese-mission-app/main/data/questions/";
+const RAW_DATA_BASE = "https://raw.githubusercontent.com/a901112/japanese-mission-app/main/data/";
 const $ = (selector) => document.querySelector(selector);
 
 const state = {
@@ -13,20 +15,78 @@ const state = {
   index: 0,
   current: null,
   answered: false,
-  progress: loadProgress()
+  progress: loadProgress(),
+  missionProgress: loadMissionProgress(),
+  missions: [],
+  missionPaths: [],
+  knowledgePoints: [],
+  currentView: "home"
 };
 
 init();
 
 async function init() {
   bindEvents();
-  await loadBank();
+  await Promise.all([loadBank(), loadMissionData()]);
   renderHome();
   renderWeakness();
   renderStats();
   renderDebug();
   registerWorker();
 }
+
+// ─── 資料載入 ───────────────────────────────────────────────
+
+async function loadBank() {
+  const [published, draft, rejected, flagged] = await Promise.all([
+    fetchJson("./data/questions/published_questions.json"),
+    fetchJson("./data/questions/draft_questions.json"),
+    fetchJson("./data/questions/rejected_questions.json"),
+    fetchJson("./data/questions/flagged_questions.json")
+  ]);
+  const audited = published.map((question) => ({ question, audit: auditQuestion(question) }));
+  state.auditReport = buildAuditReport(audited);
+  state.questions = audited
+    .filter((item) => item.question.status === "published" && item.audit.pass)
+    .map((item) => item.question);
+  state.draft = draft.length ? draft : buildGeneratedBank().draft;
+  state.rejected = rejected;
+  state.flagged = flagged;
+}
+
+async function loadMissionData() {
+  const [missions, paths, kps] = await Promise.all([
+    fetchJson("./data/missions/missions.json"),
+    fetchJson("./data/missions/mission_paths.json"),
+    fetchJson("./data/knowledge/knowledge_points.json")
+  ]);
+  state.missions = missions;
+  state.missionPaths = paths;
+  state.knowledgePoints = kps;
+  syncMissionUnlocks();
+}
+
+async function fetchJson(path) {
+  try {
+    const response = await fetch(path, { cache: "no-store" });
+    if (!response.ok) throw new Error(path);
+    return response.json();
+  } catch {
+    const fileName = path.split("/").pop();
+    if (!fileName) return [];
+    // 嘗試從 GitHub raw 抓
+    const rawBase = path.includes("/data/questions/") ? RAW_QUESTION_BASE : RAW_DATA_BASE + path.replace("./data/", "").replace(fileName, "");
+    try {
+      const response = await fetch(rawBase + fileName, { cache: "no-store" });
+      if (!response.ok) throw new Error(fileName);
+      return response.json();
+    } catch {
+      return [];
+    }
+  }
+}
+
+// ─── 事件綁定 ─────────────────────────────────────────────
 
 function bindEvents() {
   $(".tabs").addEventListener("click", (event) => {
@@ -47,43 +107,10 @@ function bindEvents() {
   $("#playSlow").addEventListener("click", () => speak(answerText(state.current), 0.58));
 }
 
-async function loadBank() {
-  const [published, draft, rejected, flagged] = await Promise.all([
-    fetchJson("./data/questions/published_questions.json"),
-    fetchJson("./data/questions/draft_questions.json"),
-    fetchJson("./data/questions/rejected_questions.json"),
-    fetchJson("./data/questions/flagged_questions.json")
-  ]);
-
-  const audited = published.map((question) => ({ question, audit: auditQuestion(question) }));
-  state.auditReport = buildAuditReport(audited);
-  state.questions = audited
-    .filter((item) => item.question.status === "published" && item.audit.pass)
-    .map((item) => item.question);
-  state.draft = draft.length ? draft : buildGeneratedBank().draft;
-  state.rejected = rejected;
-  state.flagged = flagged;
-}
-
-async function fetchJson(path) {
-  try {
-    const response = await fetch(path, { cache: "no-store" });
-    if (!response.ok) throw new Error(path);
-    return response.json();
-  } catch {
-    const fileName = path.split("/").pop();
-    if (!fileName || !path.includes("/data/questions/")) return [];
-    try {
-      const response = await fetch(RAW_QUESTION_BASE + fileName, { cache: "no-store" });
-      if (!response.ok) throw new Error(fileName);
-      return response.json();
-    } catch {
-      return [];
-    }
-  }
-}
+// ─── 視圖控制 ─────────────────────────────────────────────
 
 function showView(view) {
+  state.currentView = view;
   document.querySelectorAll(".tabs button").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
   document.querySelectorAll(".view").forEach((section) => section.classList.add("hidden"));
   $(`#${view}View`).classList.remove("hidden");
@@ -92,6 +119,158 @@ function showView(view) {
   if (view === "stats") renderStats();
   if (view === "debug") renderDebug();
 }
+
+// ─── 首頁渲染 ─────────────────────────────────────────────
+
+function renderHome() {
+  const filtered = filteredQuestions();
+  $("#bankStatus").textContent = state.questions.length
+    ? `Published 題庫：${state.questions.length} 題；目前篩選可練 ${filtered.length} 題。`
+    : "目前沒有通過審核的題目，請先建立 published 題庫。";
+  $("#policyStatus").textContent = "答題前依 audio_policy 控制發音；非聽力題不播放完整正解句，答題後才開放正解與慢速。";
+  renderMissions();
+}
+
+function renderMissions() {
+  const container = $("#missionGrid");
+  if (!container || !state.missions.length) return;
+
+  const mp = state.missionProgress;
+
+  container.innerHTML = state.missions.map((mission) => {
+    const prog = mp.mission_progress[mission.id] || {};
+    const isUnlocked = mp.unlocked_missions.includes(mission.id);
+    const isCompleted = mp.completed_missions.includes(mission.id);
+    const status = isCompleted ? "completed" : isUnlocked ? "unlocked" : "locked";
+
+    const questionCount = mission.question_ids ? mission.question_ids.length : 0;
+    const availableCount = mission.question_ids
+      ? mission.question_ids.filter(id => state.questions.find(q => q.id === id)).length
+      : 0;
+
+    const statusIcon = isCompleted ? "✅" : isUnlocked ? "▶️" : "🔒";
+    const statusLabel = isCompleted ? "已完成" : isUnlocked ? "可挑戰" : "鎖定中";
+
+    const bestScore = prog.best_score != null ? `最高 ${prog.best_score}/${questionCount}` : "";
+    const attempts = prog.attempts ? `挑戰 ${prog.attempts} 次` : "";
+
+    return `
+      <button class="mission-card mission-${status}" 
+        ${isUnlocked ? `onclick="startMission('${mission.id}')"` : "disabled"}
+        type="button">
+        <div class="mission-card-header">
+          <span class="mission-status-icon">${statusIcon}</span>
+          <span class="mission-level">N${mission.level.replace("N","")}</span>
+        </div>
+        <strong class="mission-title">${escapeHtml(mission.title)}</strong>
+        <span class="mission-subtitle">${escapeHtml(mission.subtitle)}</span>
+        <div class="mission-hook">${escapeHtml(mission.memory_hook)}</div>
+        <div class="mission-footer">
+          <span class="mission-status-label">${statusLabel}</span>
+          <span class="mission-meta">${availableCount} 題可練${bestScore ? " · " + bestScore : ""}${attempts ? " · " + attempts : ""}</span>
+        </div>
+      </button>
+    `;
+  }).join("");
+}
+
+// ─── Mission 系統 ─────────────────────────────────────────
+
+function startMission(missionId) {
+  const mission = state.missions.find(m => m.id === missionId);
+  if (!mission) return;
+
+  // 從 published 題庫中篩出這個 mission 的題目
+  const missionQuestions = mission.question_ids
+    ? mission.question_ids.map(id => state.questions.find(q => q.id === id)).filter(Boolean)
+    : [];
+
+  if (!missionQuestions.length) {
+    // fallback：用 engine 篩選
+    const engine = mission.type === "grammar" ? "grammar_arrangement" : "verb_sense";
+    const fallback = filteredQuestions().filter(q => q.engine === engine);
+    if (!fallback.length) {
+      alert("這個任務目前沒有可用的題目，請確認題庫已載入。");
+      return;
+    }
+    launchQueue(shuffle(fallback).slice(0, 10), missionId);
+    return;
+  }
+
+  launchQueue(shuffle(missionQuestions), missionId);
+}
+
+function launchQueue(queue, missionId = null) {
+  state.queue = queue;
+  state.index = 0;
+  state.activeMissionId = missionId;
+  state.sessionCorrect = 0;
+  showView("practice");
+  renderQuestion();
+}
+
+function syncMissionUnlocks() {
+  if (!state.missions.length) return;
+  const mp = state.missionProgress;
+
+  // 確保第一個任務永遠解鎖
+  const firstMission = state.missions[0];
+  if (firstMission && !mp.unlocked_missions.includes(firstMission.id)) {
+    mp.unlocked_missions.push(firstMission.id);
+  }
+
+  // 根據 completed_missions 解鎖後續任務
+  state.missions.forEach(mission => {
+    const cond = mission.unlock_condition;
+    if (!cond) return;
+    if (cond.type === "default_unlocked") {
+      if (!mp.unlocked_missions.includes(mission.id)) mp.unlocked_missions.push(mission.id);
+    }
+    if (cond.type === "complete_mission") {
+      const allDone = (cond.mission_ids || []).every(id => mp.completed_missions.includes(id));
+      if (allDone && !mp.unlocked_missions.includes(mission.id)) {
+        mp.unlocked_missions.push(mission.id);
+      }
+    }
+  });
+
+  saveMissionProgress();
+}
+
+function completeMission(missionId, correctCount) {
+  const mission = state.missions.find(m => m.id === missionId);
+  if (!mission) return;
+
+  const mp = state.missionProgress;
+  const minCorrect = mission.completion_rule?.min_correct || 1;
+  const passed = correctCount >= minCorrect;
+
+  // 更新 mission_progress
+  const existing = mp.mission_progress[missionId] || { attempts: 0, best_score: 0 };
+  existing.attempts = (existing.attempts || 0) + 1;
+  existing.best_score = Math.max(existing.best_score || 0, correctCount);
+  existing.last_attempted_at = new Date().toISOString().slice(0, 10);
+
+  if (passed) {
+    existing.status = "completed";
+    existing.completed_at = new Date().toISOString().slice(0, 10);
+    if (!mp.completed_missions.includes(missionId)) {
+      mp.completed_missions.push(missionId);
+    }
+    // 解鎖下一關
+    const rewards = mission.reward?.unlock_mission_ids || [];
+    rewards.forEach(id => {
+      if (!mp.unlocked_missions.includes(id)) mp.unlocked_missions.push(id);
+    });
+  } else {
+    existing.status = "in_progress";
+  }
+
+  mp.mission_progress[missionId] = existing;
+  saveMissionProgress();
+}
+
+// ─── 題目練習（保留原有邏輯） ──────────────────────────────
 
 function filteredQuestions() {
   const jlpt = $("#jlptFilter").value;
@@ -103,14 +282,6 @@ function filteredQuestions() {
   });
 }
 
-function renderHome() {
-  const filtered = filteredQuestions();
-  $("#bankStatus").textContent = state.questions.length
-    ? `Published 題庫：${state.questions.length} 題；目前篩選可練 ${filtered.length} 題。正式練習只抽 status = published 且 audit_pass = true 的題目。`
-    : "目前沒有通過審核的題目，請先建立 published 題庫。";
-  $("#policyStatus").textContent = "答題前依 audio_policy 控制發音；非聽力題不播放完整正解句，答題後才開放正解與慢速。";
-}
-
 function startPractice(engine) {
   const source = engine === "weak_review" ? weakReviewQueue() : filteredQuestions().filter((question) => question.engine === engine);
   const queue = shuffle(source).slice(0, 10);
@@ -118,10 +289,7 @@ function startPractice(engine) {
     alert(state.questions.length ? "目前沒有符合條件的題目。" : "目前沒有通過審核的題目，請先建立 published 題庫。");
     return;
   }
-  state.queue = queue;
-  state.index = 0;
-  showView("practice");
-  renderQuestion();
+  launchQueue(queue);
 }
 
 function weakReviewQueue() {
@@ -178,6 +346,7 @@ function gradeChoice(choiceId, button) {
   const correct = state.current.choices.find((choice) => choice.id === state.current.answer_id);
   const ok = choiceId === state.current.answer_id;
   state.answered = true;
+  if (ok && state.sessionCorrect != null) state.sessionCorrect++;
   button.classList.add(ok ? "correct" : "wrong");
   document.querySelectorAll("#answerArea button").forEach((item) => {
     const choice = state.current.choices.find((entry) => entry.text === item.textContent);
@@ -266,6 +435,12 @@ function markUnknown() {
 
 function nextQuestion() {
   if (state.index >= state.queue.length - 1) {
+    // 最後一題結束
+    if (state.activeMissionId) {
+      completeMission(state.activeMissionId, state.sessionCorrect || 0);
+    }
+    state.activeMissionId = null;
+    state.sessionCorrect = 0;
     showView("home");
     return;
   }
@@ -288,6 +463,8 @@ function answerText(question) {
   return question?.choices?.find((choice) => choice.id === question.answer_id)?.text || "";
 }
 
+// ─── 弱點 / 統計 / Debug ──────────────────────────────────
+
 function renderWeakness() {
   const items = Object.values(state.progress.weaknesses).sort((a, b) => b.wrong_count - a.wrong_count);
   $("#weaknessList").innerHTML = items.length ? items.map((item) => `
@@ -304,10 +481,13 @@ function renderStats() {
   const mastered = Object.values(state.progress.weaknesses).filter((item) => item.status === "mastered").length;
   const weak = Object.values(state.progress.weaknesses).filter((item) => item.status !== "mastered").length;
   const todayRate = state.progress.today.total ? Math.round((state.progress.today.correct / state.progress.today.total) * 100) : "--";
+  const completedCount = state.missionProgress.completed_missions.length;
+  const totalMissions = state.missions.length;
   $("#statsDetail").innerHTML = `
     <div class="list-item"><strong>今日</strong>答題 ${state.progress.today.total} 題，答對率 ${todayRate}${todayRate === "--" ? "" : "%"}。</div>
     <div class="list-item"><strong>累積</strong>答題 ${state.progress.total} 題，答對 ${state.progress.correct} 題。</div>
     <div class="list-item"><strong>弱點狀態</strong>待複習 ${weak} 個概念，已 mastered ${mastered} 個概念。</div>
+    <div class="list-item"><strong>任務進度</strong>已完成 ${completedCount} / ${totalMissions} 個任務。</div>
   `;
 }
 
@@ -326,6 +506,7 @@ function renderDebug() {
   $("#debugReport").innerHTML = `
     <div class="list-item"><strong>Pipeline</strong>draft：${state.draft.length}<br>published：${state.questions.length}<br>rejected：${state.rejected.length}<br>flagged：${state.flagged.length}</div>
     <div class="list-item"><strong>Published 分布</strong>語法排列：${byEngine.grammar_arrangement || 0}<br>動詞語感：${byEngine.verb_sense || 0}<br>聽覺語感：${byEngine.audio_sense || 0}</div>
+    <div class="list-item"><strong>Mission 系統</strong>任務總數：${state.missions.length}<br>學習路線：${state.missionPaths.length}<br>知識點：${state.knowledgePoints.length}<br>已完成任務：${state.missionProgress.completed_missions.length}<br>已解鎖任務：${state.missionProgress.unlocked_missions.length}</div>
     <div class="list-item"><strong>題庫稽核報告</strong>
       published 總題數：${audit.total}<br>
       audit pass：${audit.pass}<br>
@@ -342,6 +523,8 @@ function renderDebug() {
     ${fails || '<div class="list-item"><strong>Audit fail 清單</strong>目前沒有 audit fail 題目。</div>'}
   `;
 }
+
+// ─── 稽核邏輯（原有，完整保留）────────────────────────────
 
 function auditQuestion(question) {
   const reasons = [];
@@ -378,20 +561,20 @@ function buildAuditReport(auditedItems) {
   const report = { total: auditedItems.length, pass: 0, fail: 0, missingChoiceZh: 0, missingChoiceSense: 0, missingWrongReason: 0, missingCoreExplanation: 0, missingContrastTable: 0, nonUniqueAnswer: 0, targetMismatch: 0, audioRisk: 0, failures: [] };
   auditedItems.forEach(({ question, audit }) => {
     audit.pass ? report.pass += 1 : report.fail += 1;
-    if (audit.reasons.some((reason) => reason.includes("missing choice.zh"))) report.missingChoiceZh += 1;
-    if (audit.reasons.some((reason) => reason.includes("missing choice.sense"))) report.missingChoiceSense += 1;
-    if (audit.reasons.some((reason) => reason.includes("missing wrong_reason"))) report.missingWrongReason += 1;
+    if (audit.reasons.some((r) => r.includes("missing choice.zh"))) report.missingChoiceZh += 1;
+    if (audit.reasons.some((r) => r.includes("missing choice.sense"))) report.missingChoiceSense += 1;
+    if (audit.reasons.some((r) => r.includes("missing wrong_reason"))) report.missingWrongReason += 1;
     if (audit.reasons.includes("missing core_explanation")) report.missingCoreExplanation += 1;
     if (audit.reasons.includes("missing contrast_table")) report.missingContrastTable += 1;
-    if (audit.reasons.some((reason) => reason.includes("non-unique") || reason.includes("answer_id"))) report.nonUniqueAnswer += 1;
+    if (audit.reasons.some((r) => r.includes("non-unique") || r.includes("answer_id"))) report.nonUniqueAnswer += 1;
     if (audit.reasons.includes("target_meaning or correct zh unavailable")) report.targetMismatch += 1;
-    if (audit.reasons.some((reason) => reason.includes("audio_policy"))) report.audioRisk += 1;
+    if (audit.reasons.some((r) => r.includes("audio_policy"))) report.audioRisk += 1;
     if (!audit.pass) {
       report.failures.push({
         question_id: question.id || "missing_id",
         fail_reason: audit.reasons,
         prompt: question.prompt || "",
-        answer: question.choices?.find((choice) => choice.id === question.answer_id)?.text || "",
+        answer: question.choices?.find((c) => c.id === question.answer_id)?.text || "",
         suggestion: "移到 rejected/flagged，補齊解析資料並重新做語意與唯一性審核。"
       });
     }
@@ -412,6 +595,8 @@ function buildGeneratedBank() {
   return { draft };
 }
 
+// ─── 語音 ─────────────────────────────────────────────────
+
 function speak(text, rate) {
   if (!("speechSynthesis" in window) || !text) {
     showMessage("這個瀏覽器不支援語音播放。");
@@ -429,6 +614,8 @@ function showMessage(text) {
   $("#feedbackPanel").textContent = text;
 }
 
+// ─── 進度 localStorage ────────────────────────────────────
+
 function loadProgress() {
   const fallback = { today: { date: todayKey(), total: 0, correct: 0 }, total: 0, correct: 0, weaknesses: {} };
   try {
@@ -445,6 +632,29 @@ function saveProgress() {
   localStorage.setItem(STORE_KEY, JSON.stringify(state.progress));
 }
 
+function loadMissionProgress() {
+  const fallback = {
+    user_id: "local_user_" + Math.random().toString(36).slice(2, 10),
+    completed_missions: [],
+    unlocked_missions: [],
+    mission_progress: {},
+    last_practice_date: null
+  };
+  try {
+    const saved = JSON.parse(localStorage.getItem(MISSION_STORE_KEY));
+    return saved ? { ...fallback, ...saved } : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveMissionProgress() {
+  state.missionProgress.last_practice_date = todayKey();
+  localStorage.setItem(MISSION_STORE_KEY, JSON.stringify(state.missionProgress));
+}
+
+// ─── Service Worker ───────────────────────────────────────
+
 function registerWorker() {
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     let refreshing = false;
@@ -456,6 +666,8 @@ function registerWorker() {
     navigator.serviceWorker.register("./sw.js").then((registration) => registration.update());
   }
 }
+
+// ─── 工具函式 ─────────────────────────────────────────────
 
 function engineLabel(engine) {
   return { grammar_arrangement: "語法排列", verb_sense: "動詞語感", weak_review: "弱點複習", audio_sense: "聽覺語感" }[engine] || engine;
