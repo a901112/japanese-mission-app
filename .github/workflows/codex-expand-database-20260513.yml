@@ -16,9 +16,23 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download expanded database files
         run: |
-          set -euo pipefail
-          curl -L "https://tmpfiles.org/dl/wwwPwzcRzqNe/jma-db-expand.zip" -o /tmp/jma-db-expand.zip
-          unzip -o /tmp/jma-db-expand.zip -d .
+          set -euxo pipefail
+          python - <<'PY'
+          import urllib.request
+          url = 'https://tmpfiles.org/dl/wwwPwzcRzqNe/jma-db-expand.zip'
+          req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 Codex-GitHub-Actions'})
+          with urllib.request.urlopen(req, timeout=60) as r:
+              data = r.read()
+          print('downloaded bytes', len(data), 'content-type', r.headers.get('content-type'))
+          open('/tmp/jma-db-expand.zip', 'wb').write(data)
+          PY
+          file /tmp/jma-db-expand.zip
+          python - <<'PY'
+          import zipfile
+          z = zipfile.ZipFile('/tmp/jma-db-expand.zip')
+          print(z.namelist())
+          z.extractall('.')
+          PY
       - name: Validate database JSON and references
         run: |
           python - <<'PY'
@@ -37,9 +51,7 @@ jobs:
               'data/missions/missions.json',
               'data/missions/mission_paths.json',
           ]
-          data = {}
-          for file in files:
-              data[file] = json.loads((root / file).read_text(encoding='utf-8'))
+          data = {file: json.loads((root / file).read_text(encoding='utf-8')) for file in files}
           counts = {
               'knowledge': len(data['data/knowledge/knowledge_points.json']),
               'categories': len(data['data/vocabulary/vocabulary_categories.json']),
