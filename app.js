@@ -1,4 +1,4 @@
-const APP_VERSION = "Japanese Mission App V3";
+const APP_VERSION = "Japanese Sense Trainer V4 Clean";
 const STORE_KEY = "japaneseSenseTrainerV2";
 const MISSION_STORE_KEY = "japaneseMissionProgress_v1";
 const RAW_QUESTION_BASE = "https://raw.githubusercontent.com/a901112/japanese-mission-app/main/data/questions/";
@@ -145,6 +145,15 @@ function showView(view) {
 
 function renderHome() {
   const filtered = filteredQuestions();
+  const grammarCount = state.missions.filter((mission) => mission.type === "grammar").length;
+  const vocabularyMissionCount = state.missions.filter((mission) => mission.type === "vocabulary").length;
+  const listeningCount = state.missions.filter((mission) => mission.type === "listening").length;
+  if ($("#grammarSummary")) {
+    $("#grammarSummary").textContent = `${grammarCount} 個任務 · ${state.knowledgePoints.length} 個知識點`;
+  }
+  if ($("#vocabularySummary")) {
+    $("#vocabularySummary").textContent = `${state.vocabularyCategories.length} 類 · ${state.vocabularyItems.length} 字 · ${vocabularyMissionCount + listeningCount} 個任務`;
+  }
   $("#bankStatus").textContent = state.questions.length
     ? `Published 題庫：${state.questions.length} 題；目前篩選可練 ${filtered.length} 題。`
     : "目前沒有通過審核的題目，請先建立 published 題庫。";
@@ -176,7 +185,7 @@ function renderMissions() {
       ? mission.question_ids.filter(id => state.questions.find(q => q.id === id)).length
       : 0;
 
-    const statusIcon = isCompleted ? "✅" : isUnlocked ? "▶️" : "🔒";
+    const statusIcon = isCompleted ? "完成" : isUnlocked ? "開始" : "鎖定";
     const statusLabel = isCompleted ? "已完成" : isUnlocked ? "可挑戰" : "鎖定中";
 
     const bestScore = prog.best_score != null ? `最高 ${prog.best_score}/${questionCount}` : "";

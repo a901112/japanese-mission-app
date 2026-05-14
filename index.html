@@ -16,13 +16,14 @@
     <main class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Japanese Mission App</p>
-          <h1>日文語感任務平台</h1>
+          <p class="eyebrow">Japanese Sense Trainer</p>
+          <h1>日文語感訓練 V4</h1>
+          <p class="topline">先選文法或單詞，再進入細分主題；入口簡單，內容完整。</p>
         </div>
       </header>
 
       <nav class="tabs" aria-label="主要頁面">
-        <button class="active" data-view="home" type="button">任務</button>
+        <button class="active" data-view="home" type="button">學習</button>
         <button data-view="weakness" type="button">弱點</button>
         <button data-view="stats" type="button">統計</button>
         <button data-view="debug" type="button">Debug</button>
@@ -32,15 +33,19 @@
 
         <!-- 學習入口 -->
         <section class="section-block">
-          <h2 class="section-label">選擇學習內容</h2>
+          <h2 class="section-label">學習入口</h2>
           <section class="content-switch" aria-label="學習內容">
             <button class="content-card active" data-home-type="grammar" type="button">
+              <span class="content-kicker">Grammar</span>
               <strong>文法</strong>
-              <span>助詞、句型、自他動詞、語感任務</span>
+              <span>助詞、句型、自他動詞、語感差異</span>
+              <small id="grammarSummary">載入中</small>
             </button>
             <button class="content-card" data-home-type="vocabulary" type="button">
+              <span class="content-kicker">Vocabulary</span>
               <strong>單詞</strong>
-              <span>依主題分類，搭配例句和情境記憶</span>
+              <span>依生活主題分類，搭配讀音、意思和例句</span>
+              <small id="vocabularySummary">載入中</small>
             </button>
           </section>
         </section>
@@ -48,7 +53,7 @@
         <section id="grammarHomePanel">
           <!-- 篩選器 -->
           <section class="filter-panel">
-            <label><span>JLPT</span>
+            <label><span>程度</span>
               <select id="jlptFilter">
                 <option value="all">全部</option>
                 <option value="N5">N5</option>
@@ -67,7 +72,6 @@
             </label>
           </section>
 
-          <!-- 文法細項 -->
           <section class="section-block">
             <h2 class="section-label">文法細項</h2>
             <section class="module-grid" aria-label="文法練習模組">
@@ -90,7 +94,6 @@
             </section>
           </section>
 
-          <!-- 任務關卡 -->
           <section class="section-block">
             <h2 class="section-label">文法任務關卡</h2>
             <p class="section-desc">按順序解鎖，每關都有記憶口訣與語感解析。</p>
