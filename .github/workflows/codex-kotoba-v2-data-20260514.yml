@@ -17,8 +17,13 @@ jobs:
       - name: Download updated site files
         run: |
           set -euxo pipefail
-          curl -L 'https://tmpfiles.org/dl/wmwVw9m7e2Lj/kotoba-trip-v2-data.zip' -o /tmp/kotoba-trip-v2-data.zip
-          unzip -o /tmp/kotoba-trip-v2-data.zip -d /tmp/kotoba-trip-v2
+          curl -L --fail --retry 3 'https://tmpfiles.org/dl/wmwVw9m7e2Lj/kotoba-trip-v2-data.zip' -o /tmp/kotoba-trip-v2-data.zip
+          python3 - <<'PY'
+          import zipfile
+          z = zipfile.ZipFile('/tmp/kotoba-trip-v2-data.zip')
+          z.extractall('/tmp/kotoba-trip-v2')
+          print('\n'.join(z.namelist()))
+          PY
           cp /tmp/kotoba-trip-v2/index.html ./index.html
           cp /tmp/kotoba-trip-v2/app.js ./app.js
           cp /tmp/kotoba-trip-v2/styles.css ./styles.css
