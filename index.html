@@ -3,168 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#1e6f62" />
+    <meta name="theme-color" content="#17150f" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="日文任務" />
-    <title>Japanese Mission App</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="言葉小旅行" />
+    <title>言葉小旅行</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./icon.svg" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <header class="topbar">
+    <main class="shell">
+      <header class="masthead">
         <div>
-          <p class="eyebrow">Japanese Sense Trainer</p>
-          <h1>日文練習 V5</h1>
-          <p class="topline">先選等級，再選文法或單詞。</p>
+          <p class="eyebrow">Kotoba Trip</p>
+          <h1>言葉小旅行</h1>
+          <p class="lead">用一段小劇情學日文。先懂場景，再練語感，最後開口跟讀。</p>
         </div>
+        <button id="soundToggle" class="icon-button" type="button" aria-label="切換發音">音</button>
       </header>
 
       <section id="homeView" class="view">
-
-        <section class="level-panel">
-          <div class="section-row">
-            <h2 class="section-label">選擇等級</h2>
-            <span id="levelSummary">載入中</span>
+        <section class="today-card">
+          <div class="postmark">TODAY</div>
+          <h2 id="todayTitle">今日小旅行</h2>
+          <p id="todayCopy">載入中</p>
+          <div class="route-strip" aria-hidden="true">
+            <span></span><i></i><span></span><i></i><span></span>
           </div>
-          <div id="levelGrid" class="level-grid" aria-label="選擇日文程度"></div>
+          <button id="startToday" class="primary wide" type="button">開始 5 分鐘</button>
         </section>
 
-        <section class="mode-panel">
-          <section class="content-switch" aria-label="學習內容類型">
-            <button class="content-card active" data-home-type="grammar" type="button">
-              <strong>文法</strong>
-              <small id="grammarSummary">載入中</small>
-            </button>
-            <button class="content-card" data-home-type="vocabulary" type="button">
-              <strong>單詞</strong>
-              <small id="vocabularySummary">載入中</small>
-            </button>
-          </section>
+        <section class="section">
+          <div class="section-head">
+            <h2>選一個地方</h2>
+            <span id="freshCount">0 個新練習</span>
+          </div>
+          <div id="sceneList" class="scene-list"></div>
         </section>
 
-        <section id="grammarHomePanel">
-          <section class="filter-panel compact-filter">
-            <label><span>場景</span>
-              <select id="sceneFilter">
-                <option value="all">全部</option>
-                <option value="daily">日常</option>
-                <option value="travel">旅行</option>
-                <option value="school">學校</option>
-                <option value="work">公司</option>
-              </select>
-            </label>
-          </section>
-
-          <section class="section-block">
-            <h2 class="section-label">練習方式</h2>
-            <section class="module-grid" aria-label="文法練習模組">
-              <button class="module-card" data-start="grammar_arrangement" type="button">
-                <strong>語法排列</strong>
-                <span>同樣單字，改變助詞和排列，意思就改變。</span>
-              </button>
-              <button class="module-card" data-start="verb_sense" type="button">
-                <strong>動詞語感</strong>
-                <span>見る、見える、見せる 差在哪裡。</span>
-              </button>
-              <button class="module-card" data-start="weak_review" type="button">
-                <strong>弱點複習</strong>
-                <span>針對常錯概念重新出變體題。</span>
-              </button>
-              <button class="module-card" data-start="audio_sense" type="button">
-                <strong>聽覺語感</strong>
-                <span>聽句子、聽最小差異，答後跟讀。</span>
-              </button>
-            </section>
-          </section>
-
-          <section class="section-block">
-            <h2 class="section-label">任務</h2>
-            <p class="section-desc">同一個弱點下次會換題，不會一直重複同一句。</p>
-            <div id="missionGrid" class="mission-grid"></div>
-          </section>
+        <section class="section">
+          <div class="section-head">
+            <h2>今日記憶</h2>
+            <span>不是背答案，是換句子還會</span>
+          </div>
+          <div id="memoryBoard" class="memory-board"></div>
         </section>
-
-        <section id="vocabularyHomePanel" class="hidden">
-          <section class="section-block">
-            <h2 class="section-label">分類</h2>
-            <p class="section-desc">先選主題，再看這組單字的讀音、意思和例句。</p>
-            <div id="vocabularyGrid" class="vocabulary-grid"></div>
-          </section>
-          <section class="section-block">
-            <h2 class="section-label">單詞清單</h2>
-            <div id="vocabularyList" class="vocabulary-list"></div>
-          </section>
-        </section>
-
-        <!-- 題庫狀態 -->
-        <section class="status-panel">
-          <h2>題庫狀態</h2>
-          <p id="bankStatus">題庫載入中。</p>
-          <p id="policyStatus">Audio Policy 載入中。</p>
-        </section>
-
       </section>
 
-      <!-- 練習頁 -->
       <section id="practiceView" class="view hidden">
-        <section class="practice-head">
-          <button class="ghost" id="backHome" type="button">返回</button>
+        <header class="practice-top">
+          <button id="leavePractice" class="text-button" type="button">返回</button>
           <div>
-            <p class="eyebrow" id="questionMeta">語感訓練</p>
-            <h2 id="questionType">語法排列</h2>
+            <p id="practiceScene" class="eyebrow">Scene</p>
+            <h2 id="practiceTitle">練習</h2>
           </div>
-          <span id="questionProgress">1 / 10</span>
+          <span id="practiceProgress">1/5</span>
+        </header>
+
+        <section class="prompt-card">
+          <p id="promptMode" class="prompt-mode">語感</p>
+          <h2 id="promptText"></h2>
+          <p id="promptHint"></p>
+          <button id="playPrompt" class="sound-button" type="button">聽這句</button>
         </section>
-        <section class="question-card">
-          <p id="questionInstruction">請作答。</p>
-          <h2 id="questionText"></h2>
-          <div id="tokenArea" class="token-area"></div>
-          <div id="buildArea" class="build-area hidden"></div>
-          <div class="audio-row">
-            <button id="playBefore" type="button">題目前音</button>
-            <button id="playAnswer" type="button" disabled>正解</button>
-            <button id="playSlow" type="button" disabled>慢速</button>
+
+        <section id="choiceArea" class="choice-area"></section>
+        <section id="feedback" class="feedback hidden"></section>
+
+        <div class="practice-actions">
+          <button id="notSure" class="secondary" type="button">我不確定</button>
+          <button id="nextCard" class="primary" type="button">下一張</button>
+        </div>
+      </section>
+
+      <section id="notebookView" class="view hidden">
+        <section class="section">
+          <div class="section-head">
+            <h2>錯題本</h2>
+            <button id="reviewWeakness" class="small-button" type="button">換句複習</button>
           </div>
-        </section>
-        <section id="answerArea" class="answer-area"></section>
-        <section id="feedbackPanel" class="feedback-panel hidden"></section>
-        <section class="action-row">
-          <button class="secondary" id="unknownButton" type="button">我不懂</button>
-          <button class="primary" id="nextButton" type="button">下一題</button>
+          <div id="weaknessList" class="note-list"></div>
         </section>
       </section>
 
-      <nav class="tabs" aria-label="主要頁面">
-        <button class="active" data-view="home" type="button">首頁</button>
-        <button data-view="weakness" type="button">錯題本</button>
-        <button data-view="stats" type="button">我的</button>
-        <button data-view="debug" type="button">Debug</button>
+      <section id="meView" class="view hidden">
+        <section class="profile-card">
+          <p class="eyebrow">My Trip</p>
+          <h2 id="streakText">0 天</h2>
+          <p id="profileSummary">今天還沒開始。</p>
+        </section>
+        <section class="section">
+          <div class="section-head"><h2>學習足跡</h2></div>
+          <div id="statsList" class="note-list"></div>
+        </section>
+      </section>
+
+      <nav class="bottom-nav" aria-label="主要頁面">
+        <button class="active" data-view="home" type="button">旅行</button>
+        <button data-view="practice" type="button">練習</button>
+        <button data-view="notebook" type="button">錯題</button>
+        <button data-view="me" type="button">我的</button>
       </nav>
-
-      <!-- 弱點頁 -->
-      <section id="weaknessView" class="view hidden">
-        <section class="section-head">
-          <h2>弱點本</h2>
-          <button id="reviewWeakButton" type="button">練 10 題</button>
-        </section>
-        <div id="weaknessList" class="list-panel"></div>
-      </section>
-
-      <!-- 統計頁 -->
-      <section id="statsView" class="view hidden">
-        <section class="section-head"><h2>統計</h2></section>
-        <div id="statsDetail" class="list-panel"></div>
-      </section>
-
-      <!-- Debug 頁 -->
-      <section id="debugView" class="view hidden">
-        <section class="section-head"><h2>題庫管理 / Debug</h2></section>
-        <div id="debugReport" class="list-panel"></div>
-      </section>
-
     </main>
     <script src="./app.js"></script>
   </body>
