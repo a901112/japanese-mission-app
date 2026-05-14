@@ -1,6 +1,8 @@
-const APP_VERSION = "Japanese Sense Trainer V4 Clean";
+const APP_VERSION = "Japanese Sense Trainer V5 Level";
 const STORE_KEY = "japaneseSenseTrainerV2";
 const MISSION_STORE_KEY = "japaneseMissionProgress_v1";
+const QUESTION_HISTORY_KEY = "japaneseQuestionHistory_v1";
+const RECENT_QUESTION_LIMIT = 45;
 const RAW_QUESTION_BASE = "https://raw.githubusercontent.com/a901112/japanese-mission-app/main/data/questions/";
 const RAW_DATA_BASE = "https://raw.githubusercontent.com/a901112/japanese-mission-app/main/data/";
 const $ = (selector) => document.querySelector(selector);
@@ -16,6 +18,7 @@ const state = {
   current: null,
   answered: false,
   progress: loadProgress(),
+  questionHistory: loadQuestionHistory(),
   missionProgress: loadMissionProgress(),
   missions: [],
   missionPaths: [],
@@ -23,6 +26,7 @@ const state = {
   vocabularyCategories: [],
   vocabularyItems: [],
   homeType: "grammar",
+  selectedLevel: "N5",
   selectedVocabCategory: null,
   currentView: "home"
 };
@@ -111,13 +115,24 @@ function bindEvents() {
       renderHome();
     });
   });
+  $("#levelGrid")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-level]");
+    if (!button) return;
+    state.selectedLevel = button.dataset.level;
+    const levelSelect = $("#jlptFilter");
+    if (levelSelect) levelSelect.value = state.selectedLevel;
+    renderHome();
+  });
   $("#vocabularyGrid")?.addEventListener("click", (event) => {
     const button = event.target.closest("[data-vocab-category]");
     if (!button) return;
     state.selectedVocabCategory = button.dataset.vocabCategory;
     renderVocabulary();
   });
-  $("#jlptFilter").addEventListener("change", renderHome);
+  $("#jlptFilter")?.addEventListener("change", (event) => {
+    state.selectedLevel = event.target.value;
+    renderHome();
+  });
   $("#sceneFilter").addEventListener("change", renderHome);
   $("#backHome").addEventListener("click", () => showView("home"));
   $("#reviewWeakButton").addEventListener("click", () => startPractice("weak_review"));
@@ -145,14 +160,15 @@ function showView(view) {
 
 function renderHome() {
   const filtered = filteredQuestions();
-  const grammarCount = state.missions.filter((mission) => mission.type === "grammar").length;
-  const vocabularyMissionCount = state.missions.filter((mission) => mission.type === "vocabulary").length;
-  const listeningCount = state.missions.filter((mission) => mission.type === "listening").length;
+  const grammarCount = filteredMissions("grammar").length;
+  const vocabularyMissionCount = filteredMissions("vocabulary").length;
+  const listeningCount = filteredMissions("listening").length;
+  renderLevels();
   if ($("#grammarSummary")) {
-    $("#grammarSummary").textContent = `${grammarCount} 個任務 · ${state.knowledgePoints.length} 個知識點`;
+    $("#grammarSummary").textContent = `${grammarCount} 任務`;
   }
   if ($("#vocabularySummary")) {
-    $("#vocabularySummary").textContent = `${state.vocabularyCategories.length} 類 · ${state.vocabularyItems.length} 字 · ${vocabularyMissionCount + listeningCount} 個任務`;
+    $("#vocabularySummary").textContent = `${filteredVocabularyItems().length} 字 · ${vocabularyMissionCount + listeningCount} 任務`;
   }
   $("#bankStatus").textContent = state.questions.length
     ? `Published 題庫：${state.questions.length} 題；目前篩選可練 ${filtered.length} 題。`
@@ -167,14 +183,44 @@ function renderHome() {
   renderVocabulary();
 }
 
+function renderLevels() {
+  const grid = $("#levelGrid");
+  if (!grid) return;
+  const levels = ["N5", "N4", "N3", "N2", "N1"];
+  grid.innerHTML = levels.map((level) => {
+    const missionCount = state.missions.filter((mission) => mission.level === level).length;
+    const wordCount = state.vocabularyItems.filter((item) => item.level === level || item.jlpt === level).length;
+    const active = state.selectedLevel === level;
+    return `
+      <button class="level-card ${active ? "active" : ""}" data-level="${level}" type="button">
+        <strong>${level}</strong>
+        <span>${missionCount} 任務 · ${wordCount} 字</span>
+      </button>
+    `;
+  }).join("");
+  $("#levelSummary").textContent = `${state.selectedLevel} · 最近 ${state.questionHistory.recent_question_ids.length} 題會避開重出`;
+}
+
+function filteredMissions(type) {
+  return state.missions.filter((mission) => {
+    const typeMatch = type ? mission.type === type : true;
+    const levelMatch = !state.selectedLevel || state.selectedLevel === "all" || mission.level === state.selectedLevel;
+    return typeMatch && levelMatch;
+  });
+}
+
+function filteredVocabularyItems() {
+  return state.vocabularyItems.filter((item) => !state.selectedLevel || state.selectedLevel === "all" || item.level === state.selectedLevel || item.jlpt === state.selectedLevel);
+}
+
 function renderMissions() {
   const container = $("#missionGrid");
   if (!container || !state.missions.length) return;
 
   const mp = state.missionProgress;
-  const missions = state.missions.filter((mission) => mission.type === "grammar");
+  const missions = filteredMissions("grammar");
 
-  container.innerHTML = missions.map((mission) => {
+  container.innerHTML = missions.length ? missions.map((mission) => {
     const prog = mp.mission_progress[mission.id] || {};
     const isUnlocked = mp.unlocked_missions.includes(mission.id);
     const isCompleted = mp.completed_missions.includes(mission.id);
@@ -208,7 +254,7 @@ function renderMissions() {
         </div>
       </button>
     `;
-  }).join("");
+  }).join("") : `<div class="empty-panel">這個等級目前沒有文法任務，請先選 N5 或 N4。</div>`;
 }
 
 function renderVocabulary() {
@@ -225,8 +271,10 @@ function renderVocabulary() {
     state.selectedVocabCategory = state.vocabularyCategories[0].id;
   }
 
+  const levelWords = filteredVocabularyItems();
   grid.innerHTML = state.vocabularyCategories.map((category) => {
-    const count = state.vocabularyItems.filter((item) => (item.categories || []).includes(category.id)).length;
+    const count = levelWords.filter((item) => (item.categories || []).includes(category.id)).length;
+    if (!count) return "";
     const active = category.id === state.selectedVocabCategory;
     return `
       <button class="vocab-card ${active ? "active" : ""}" data-vocab-category="${escapeHtml(category.id)}" type="button">
@@ -237,8 +285,13 @@ function renderVocabulary() {
     `;
   }).join("");
 
+  let words = levelWords.filter((item) => (item.categories || []).includes(state.selectedVocabCategory));
+  if (!words.length) {
+    const firstAvailable = state.vocabularyCategories.find((category) => levelWords.some((item) => (item.categories || []).includes(category.id)));
+    state.selectedVocabCategory = firstAvailable?.id || null;
+    words = levelWords.filter((item) => (item.categories || []).includes(state.selectedVocabCategory));
+  }
   const category = state.vocabularyCategories.find((item) => item.id === state.selectedVocabCategory);
-  const words = state.vocabularyItems.filter((item) => (item.categories || []).includes(state.selectedVocabCategory));
   list.innerHTML = words.length ? `
     <div class="vocab-list-head">
       <strong>${escapeHtml(category?.title || "單詞")}</strong>
@@ -276,11 +329,11 @@ function startMission(missionId) {
       alert("這個任務目前沒有可用的題目，請確認題庫已載入。");
       return;
     }
-    launchQueue(shuffle(fallback).slice(0, 10), missionId);
+    launchQueue(selectPracticeQueue(fallback, 10), missionId);
     return;
   }
 
-  launchQueue(shuffle(missionQuestions), missionId);
+  launchQueue(selectPracticeQueue(missionQuestions, 10), missionId);
 }
 
 function launchQueue(queue, missionId = null) {
@@ -356,7 +409,7 @@ function completeMission(missionId, correctCount) {
 // ─── 題目練習（保留原有邏輯） ──────────────────────────────
 
 function filteredQuestions() {
-  const jlpt = $("#jlptFilter").value;
+  const jlpt = state.selectedLevel || $("#jlptFilter")?.value || "all";
   const scene = $("#sceneFilter").value;
   return state.questions.filter((question) => {
     const jlptMatch = jlpt === "all" || question.jlpt_tag === jlpt;
@@ -367,7 +420,7 @@ function filteredQuestions() {
 
 function startPractice(engine) {
   const source = engine === "weak_review" ? weakReviewQueue() : filteredQuestions().filter((question) => question.engine === engine);
-  const queue = shuffle(source).slice(0, 10);
+  const queue = selectPracticeQueue(source, 10);
   if (!queue.length) {
     alert(state.questions.length ? "目前沒有符合條件的題目。" : "目前沒有通過審核的題目，請先建立 published 題庫。");
     return;
@@ -378,7 +431,21 @@ function startPractice(engine) {
 function weakReviewQueue() {
   const weakTags = Object.keys(state.progress.weaknesses).filter((tag) => state.progress.weaknesses[tag].status !== "mastered");
   if (!weakTags.length) return filteredQuestions();
-  return filteredQuestions().filter((question) => question.weakness_tags.some((tag) => weakTags.includes(tag)));
+  const recentWrongIds = new Set(Object.values(state.progress.weaknesses).map((item) => item.last_question_id).filter(Boolean));
+  const candidates = filteredQuestions().filter((question) => question.weakness_tags.some((tag) => weakTags.includes(tag)));
+  return candidates.sort((a, b) => {
+    const aRepeatedWrong = recentWrongIds.has(a.id) ? 1 : 0;
+    const bRepeatedWrong = recentWrongIds.has(b.id) ? 1 : 0;
+    return aRepeatedWrong - bRepeatedWrong;
+  });
+}
+
+function selectPracticeQueue(source, limit = 10) {
+  const recentIds = new Set(state.questionHistory.recent_question_ids || []);
+  const unique = Array.from(new Map(source.map((question) => [question.id, question])).values());
+  const fresh = unique.filter((question) => !recentIds.has(question.id));
+  const recent = unique.filter((question) => recentIds.has(question.id));
+  return shuffle(fresh).concat(shuffle(recent)).slice(0, limit);
 }
 
 function renderQuestion() {
@@ -442,6 +509,7 @@ function gradeChoice(choiceId, button) {
 }
 
 function recordAnswer(question, ok, selected, correct) {
+  rememberQuestion(question.id);
   if (state.progress.today.date !== todayKey()) state.progress.today = { date: todayKey(), total: 0, correct: 0 };
   state.progress.today.total += 1;
   state.progress.total += 1;
@@ -470,6 +538,8 @@ function recordAnswer(question, ok, selected, correct) {
       item.wrong_answer = selected?.text || "我不懂";
       item.correct_answer = correct?.text || "";
       item.explanation = question.core_explanation;
+      item.last_question_id = question.id;
+      item.last_prompt = question.prompt;
     }
     state.progress.weaknesses[tag] = item;
   });
@@ -713,6 +783,23 @@ function loadProgress() {
 
 function saveProgress() {
   localStorage.setItem(STORE_KEY, JSON.stringify(state.progress));
+}
+
+function loadQuestionHistory() {
+  const fallback = { recent_question_ids: [] };
+  try {
+    const saved = JSON.parse(localStorage.getItem(QUESTION_HISTORY_KEY));
+    return saved ? { ...fallback, ...saved, recent_question_ids: saved.recent_question_ids || [] } : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function rememberQuestion(questionId) {
+  if (!questionId) return;
+  const recent = [questionId, ...(state.questionHistory.recent_question_ids || []).filter((id) => id !== questionId)];
+  state.questionHistory.recent_question_ids = recent.slice(0, RECENT_QUESTION_LIMIT);
+  localStorage.setItem(QUESTION_HISTORY_KEY, JSON.stringify(state.questionHistory));
 }
 
 function loadMissionProgress() {

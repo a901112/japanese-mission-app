@@ -17,50 +17,36 @@
       <header class="topbar">
         <div>
           <p class="eyebrow">Japanese Sense Trainer</p>
-          <h1>日文語感訓練 V4</h1>
-          <p class="topline">先選文法或單詞，再進入細分主題；入口簡單，內容完整。</p>
+          <h1>日文練習 V5</h1>
+          <p class="topline">先選等級，再選文法或單詞。</p>
         </div>
       </header>
 
-      <nav class="tabs" aria-label="主要頁面">
-        <button class="active" data-view="home" type="button">學習</button>
-        <button data-view="weakness" type="button">弱點</button>
-        <button data-view="stats" type="button">統計</button>
-        <button data-view="debug" type="button">Debug</button>
-      </nav>
-
       <section id="homeView" class="view">
 
-        <!-- 學習入口 -->
-        <section class="section-block">
-          <h2 class="section-label">學習入口</h2>
-          <section class="content-switch" aria-label="學習內容">
+        <section class="level-panel">
+          <div class="section-row">
+            <h2 class="section-label">選擇等級</h2>
+            <span id="levelSummary">載入中</span>
+          </div>
+          <div id="levelGrid" class="level-grid" aria-label="選擇日文程度"></div>
+        </section>
+
+        <section class="mode-panel">
+          <section class="content-switch" aria-label="學習內容類型">
             <button class="content-card active" data-home-type="grammar" type="button">
-              <span class="content-kicker">Grammar</span>
               <strong>文法</strong>
-              <span>助詞、句型、自他動詞、語感差異</span>
               <small id="grammarSummary">載入中</small>
             </button>
             <button class="content-card" data-home-type="vocabulary" type="button">
-              <span class="content-kicker">Vocabulary</span>
               <strong>單詞</strong>
-              <span>依生活主題分類，搭配讀音、意思和例句</span>
               <small id="vocabularySummary">載入中</small>
             </button>
           </section>
         </section>
 
         <section id="grammarHomePanel">
-          <!-- 篩選器 -->
-          <section class="filter-panel">
-            <label><span>程度</span>
-              <select id="jlptFilter">
-                <option value="all">全部</option>
-                <option value="N5">N5</option>
-                <option value="N4">N4</option>
-                <option value="N3">N3</option>
-              </select>
-            </label>
+          <section class="filter-panel compact-filter">
             <label><span>場景</span>
               <select id="sceneFilter">
                 <option value="all">全部</option>
@@ -73,7 +59,7 @@
           </section>
 
           <section class="section-block">
-            <h2 class="section-label">文法細項</h2>
+            <h2 class="section-label">練習方式</h2>
             <section class="module-grid" aria-label="文法練習模組">
               <button class="module-card" data-start="grammar_arrangement" type="button">
                 <strong>語法排列</strong>
@@ -95,15 +81,15 @@
           </section>
 
           <section class="section-block">
-            <h2 class="section-label">文法任務關卡</h2>
-            <p class="section-desc">按順序解鎖，每關都有記憶口訣與語感解析。</p>
+            <h2 class="section-label">任務</h2>
+            <p class="section-desc">同一個弱點下次會換題，不會一直重複同一句。</p>
             <div id="missionGrid" class="mission-grid"></div>
           </section>
         </section>
 
         <section id="vocabularyHomePanel" class="hidden">
           <section class="section-block">
-            <h2 class="section-label">單詞分類</h2>
+            <h2 class="section-label">分類</h2>
             <p class="section-desc">先選主題，再看這組單字的讀音、意思和例句。</p>
             <div id="vocabularyGrid" class="vocabulary-grid"></div>
           </section>
@@ -150,6 +136,13 @@
           <button class="primary" id="nextButton" type="button">下一題</button>
         </section>
       </section>
+
+      <nav class="tabs" aria-label="主要頁面">
+        <button class="active" data-view="home" type="button">首頁</button>
+        <button data-view="weakness" type="button">錯題本</button>
+        <button data-view="stats" type="button">我的</button>
+        <button data-view="debug" type="button">Debug</button>
+      </nav>
 
       <!-- 弱點頁 -->
       <section id="weaknessView" class="view hidden">
