@@ -23,9 +23,9 @@ jobs:
           cp /tmp/kotoba-trip-v2/app.js ./app.js
           cp /tmp/kotoba-trip-v2/styles.css ./styles.css
           mkdir -p ./data/kotoba ./scripts
-          cp /tmp/kotoba-trip-v2/data/kotoba/scene_questions.json ./data/kotoba/scene_questions.json
-          cp /tmp/kotoba-trip-v2/data/kotoba/vocabulary_cards.json ./data/kotoba/vocabulary_cards.json
-          cp /tmp/kotoba-trip-v2/scripts/build-kotoba-data.mjs ./scripts/build-kotoba-data.mjs
+          cp /tmp/kotoba-trip-v2/kotoba/scene_questions.json ./data/kotoba/scene_questions.json
+          cp /tmp/kotoba-trip-v2/kotoba/vocabulary_cards.json ./data/kotoba/vocabulary_cards.json
+          cp /tmp/kotoba-trip-v2/build-kotoba-data.mjs ./scripts/build-kotoba-data.mjs
       - name: Validate Kotoba Trip V2 data
         run: |
           set -euxo pipefail
