@@ -11,7 +11,8 @@
     "example_jp": "猫が魚を食べる。",
     "example_zh": "貓吃魚。",
     "audio": true,
-    "rank": 1
+    "rank": 1,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0002",
@@ -25,7 +26,8 @@
     "example_jp": "犬が走っている。",
     "example_zh": "狗在跑。",
     "audio": true,
-    "rank": 2
+    "rank": 2,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0003",
@@ -39,7 +41,8 @@
     "example_jp": "鳥が空を飛ぶ。",
     "example_zh": "鳥在天空飛翔。",
     "audio": true,
-    "rank": 3
+    "rank": 3,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0004",
@@ -53,7 +56,8 @@
     "example_jp": "魚を食べるのが好きです。",
     "example_zh": "我喜歡吃魚。",
     "audio": true,
-    "rank": 4
+    "rank": 4,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0005",
@@ -67,7 +71,8 @@
     "example_jp": "馬に乗る。",
     "example_zh": "騎馬。",
     "audio": true,
-    "rank": 5
+    "rank": 5,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0006",
@@ -81,7 +86,8 @@
     "example_jp": "りんごを一つください。",
     "example_zh": "請給我一顆蘋果。",
     "audio": true,
-    "rank": 6
+    "rank": 6,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0007",
@@ -95,7 +101,8 @@
     "example_jp": "バナナが好きです。",
     "example_zh": "我喜歡香蕉。",
     "audio": true,
-    "rank": 7
+    "rank": 7,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0008",
@@ -109,7 +116,8 @@
     "example_jp": "冬にみかんを食べる。",
     "example_zh": "冬天吃橘子。",
     "audio": true,
-    "rank": 8
+    "rank": 8,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0009",
@@ -123,7 +131,8 @@
     "example_jp": "ぶどうジュースを飲む。",
     "example_zh": "喝葡萄汁。",
     "audio": true,
-    "rank": 9
+    "rank": 9,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0010",
@@ -137,7 +146,8 @@
     "example_jp": "今日は何曜日ですか？",
     "example_zh": "今天是星期幾？",
     "audio": true,
-    "rank": 10
+    "rank": 10,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0011",
@@ -151,7 +161,8 @@
     "example_jp": "明日また来てください。",
     "example_zh": "請明天再來。",
     "audio": true,
-    "rank": 11
+    "rank": 11,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0012",
@@ -165,7 +176,8 @@
     "example_jp": "昨日は映画を見ました。",
     "example_zh": "昨天看了電影。",
     "audio": true,
-    "rank": 12
+    "rank": 12,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0013",
@@ -179,7 +191,8 @@
     "example_jp": "今何時ですか？",
     "example_zh": "現在幾點？",
     "audio": true,
-    "rank": 13
+    "rank": 13,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0014",
@@ -193,7 +206,8 @@
     "example_jp": "朝ごはんを食べましたか？",
     "example_zh": "你吃早餐了嗎？",
     "audio": true,
-    "rank": 14
+    "rank": 14,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0015",
@@ -207,7 +221,8 @@
     "example_jp": "夜は静かです。",
     "example_zh": "晚上很安靜。",
     "audio": true,
-    "rank": 15
+    "rank": 15,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0016",
@@ -221,7 +236,8 @@
     "example_jp": "ラーメンを食べる。",
     "example_zh": "吃拉麵。",
     "audio": true,
-    "rank": 16
+    "rank": 16,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0017",
@@ -235,7 +251,8 @@
     "example_jp": "水を飲む。",
     "example_zh": "喝水。",
     "audio": true,
-    "rank": 17
+    "rank": 17,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0018",
@@ -249,7 +266,8 @@
     "example_jp": "テレビを見る。",
     "example_zh": "看電視。",
     "audio": true,
-    "rank": 18
+    "rank": 18,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0019",
@@ -263,7 +281,8 @@
     "example_jp": "音楽を聞く。",
     "example_zh": "聽音樂。",
     "audio": true,
-    "rank": 19
+    "rank": 19,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0020",
@@ -277,7 +296,8 @@
     "example_jp": "学校に行く。",
     "example_zh": "去學校。",
     "audio": true,
-    "rank": 20
+    "rank": 20,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0021",
@@ -291,7 +311,8 @@
     "example_jp": "友達が来る。",
     "example_zh": "朋友來了。",
     "audio": true,
-    "rank": 21
+    "rank": 21,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0022",
@@ -305,7 +326,8 @@
     "example_jp": "パンを買う。",
     "example_zh": "買麵包。",
     "audio": true,
-    "rank": 22
+    "rank": 22,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0023",
@@ -319,7 +341,8 @@
     "example_jp": "本を読む。",
     "example_zh": "看書。",
     "audio": true,
-    "rank": 23
+    "rank": 23,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0024",
@@ -333,7 +356,8 @@
     "example_jp": "手紙を書く。",
     "example_zh": "寫信。",
     "audio": true,
-    "rank": 24
+    "rank": 24,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0025",
@@ -347,7 +371,8 @@
     "example_jp": "赤い花が咲いている。",
     "example_zh": "紅色的花盛開著。",
     "audio": true,
-    "rank": 25
+    "rank": 25,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0026",
@@ -361,7 +386,8 @@
     "example_jp": "青い空が広がっている。",
     "example_zh": "藍色的天空延伸著。",
     "audio": true,
-    "rank": 26
+    "rank": 26,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0027",
@@ -375,7 +401,8 @@
     "example_jp": "白いシャツを着ている。",
     "example_zh": "穿著白色襯衫。",
     "audio": true,
-    "rank": 27
+    "rank": 27,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0028",
@@ -389,7 +416,8 @@
     "example_jp": "黒い猫がいる。",
     "example_zh": "有一隻黑貓。",
     "audio": true,
-    "rank": 28
+    "rank": 28,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0029",
@@ -403,7 +431,8 @@
     "example_jp": "黄色いひまわりが好きです。",
     "example_zh": "我喜歡黃色的向日葵。",
     "audio": true,
-    "rank": 29
+    "rank": 29,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0030",
@@ -417,7 +446,8 @@
     "example_jp": "あの人は先生です。",
     "example_zh": "那個人是老師。",
     "audio": true,
-    "rank": 30
+    "rank": 30,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0031",
@@ -431,7 +461,8 @@
     "example_jp": "友達と映画を見ます。",
     "example_zh": "和朋友看電影。",
     "audio": true,
-    "rank": 31
+    "rank": 31,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0032",
@@ -445,7 +476,8 @@
     "example_jp": "公園に子供がいます。",
     "example_zh": "公園裡有小孩。",
     "audio": true,
-    "rank": 32
+    "rank": 32,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0033",
@@ -459,7 +491,8 @@
     "example_jp": "水を飲みたいです。",
     "example_zh": "我想喝水。",
     "audio": true,
-    "rank": 33
+    "rank": 33,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0034",
@@ -473,7 +506,8 @@
     "example_jp": "箸をください。",
     "example_zh": "請給我筷子。",
     "audio": true,
-    "rank": 34
+    "rank": 34,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0035",
@@ -487,7 +521,8 @@
     "example_jp": "メニューを見せてください。",
     "example_zh": "請讓我看菜單。",
     "audio": true,
-    "rank": 35
+    "rank": 35,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0036",
@@ -501,7 +536,8 @@
     "example_jp": "会計をお願いします。",
     "example_zh": "麻煩結帳。",
     "audio": true,
-    "rank": 36
+    "rank": 36,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0037",
@@ -515,7 +551,8 @@
     "example_jp": "このかばんは安いです。",
     "example_zh": "這個包包很便宜。",
     "audio": true,
-    "rank": 37
+    "rank": 37,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0038",
@@ -529,7 +566,8 @@
     "example_jp": "この店は高くなかったです。",
     "example_zh": "這家店不貴。",
     "audio": true,
-    "rank": 38
+    "rank": 38,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0039",
@@ -543,7 +581,8 @@
     "example_jp": "これはいくらですか。",
     "example_zh": "這個多少錢？",
     "audio": true,
-    "rank": 39
+    "rank": 39,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0040",
@@ -557,7 +596,8 @@
     "example_jp": "駅から学校まで歩きます。",
     "example_zh": "從車站走到學校。",
     "audio": true,
-    "rank": 40
+    "rank": 40,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0041",
@@ -571,7 +611,8 @@
     "example_jp": "電車で会社へ行きます。",
     "example_zh": "搭電車去公司。",
     "audio": true,
-    "rank": 41
+    "rank": 41,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0042",
@@ -585,7 +626,8 @@
     "example_jp": "バスに乗ります。",
     "example_zh": "搭公車。",
     "audio": true,
-    "rank": 42
+    "rank": 42,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0043",
@@ -599,7 +641,8 @@
     "example_jp": "タクシーを呼んでください。",
     "example_zh": "請幫我叫計程車。",
     "audio": true,
-    "rank": 43
+    "rank": 43,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0044",
@@ -613,7 +656,8 @@
     "example_jp": "空港に行きます。",
     "example_zh": "去機場。",
     "audio": true,
-    "rank": 44
+    "rank": 44,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0045",
@@ -627,7 +671,8 @@
     "example_jp": "ホテルに泊まります。",
     "example_zh": "住飯店。",
     "audio": true,
-    "rank": 45
+    "rank": 45,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0046",
@@ -641,7 +686,8 @@
     "example_jp": "静かな部屋です。",
     "example_zh": "是安靜的房間。",
     "audio": true,
-    "rank": 46
+    "rank": 46,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0047",
@@ -655,7 +701,8 @@
     "example_jp": "鍵がありますか。",
     "example_zh": "有鑰匙嗎？",
     "audio": true,
-    "rank": 47
+    "rank": 47,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0048",
@@ -669,7 +716,8 @@
     "example_jp": "学校に行きます。",
     "example_zh": "去學校。",
     "audio": true,
-    "rank": 48
+    "rank": 48,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0049",
@@ -683,7 +731,8 @@
     "example_jp": "教室に学生がいます。",
     "example_zh": "教室裡有學生。",
     "audio": true,
-    "rank": 49
+    "rank": 49,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0050",
@@ -697,7 +746,8 @@
     "example_jp": "机の上に本があります。",
     "example_zh": "桌上有書。",
     "audio": true,
-    "rank": 50
+    "rank": 50,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0051",
@@ -711,7 +761,8 @@
     "example_jp": "鉛筆を三本ください。",
     "example_zh": "請給我三枝鉛筆。",
     "audio": true,
-    "rank": 51
+    "rank": 51,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0052",
@@ -725,7 +776,8 @@
     "example_jp": "紙が二枚あります。",
     "example_zh": "有兩張紙。",
     "audio": true,
-    "rank": 52
+    "rank": 52,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0053",
@@ -739,7 +791,8 @@
     "example_jp": "会社で働きます。",
     "example_zh": "在公司工作。",
     "audio": true,
-    "rank": 53
+    "rank": 53,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0054",
@@ -753,7 +806,8 @@
     "example_jp": "仕事が忙しいです。",
     "example_zh": "工作很忙。",
     "audio": true,
-    "rank": 54
+    "rank": 54,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0055",
@@ -767,7 +821,8 @@
     "example_jp": "三時から会議があります。",
     "example_zh": "三點開始有會議。",
     "audio": true,
-    "rank": 55
+    "rank": 55,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0056",
@@ -781,7 +836,8 @@
     "example_jp": "後で電話します。",
     "example_zh": "等一下打電話。",
     "audio": true,
-    "rank": 56
+    "rank": 56,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0057",
@@ -795,7 +851,8 @@
     "example_jp": "今日は雨です。",
     "example_zh": "今天下雨。",
     "audio": true,
-    "rank": 57
+    "rank": 57,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0058",
@@ -809,7 +866,8 @@
     "example_jp": "雪が降っています。",
     "example_zh": "正在下雪。",
     "audio": true,
-    "rank": 58
+    "rank": 58,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0059",
@@ -823,7 +881,8 @@
     "example_jp": "今日は暑いです。",
     "example_zh": "今天很熱。",
     "audio": true,
-    "rank": 59
+    "rank": 59,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0060",
@@ -837,7 +896,8 @@
     "example_jp": "朝は寒いです。",
     "example_zh": "早上很冷。",
     "audio": true,
-    "rank": 60
+    "rank": 60,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0061",
@@ -851,7 +911,8 @@
     "example_jp": "明日は晴れです。",
     "example_zh": "明天是晴天。",
     "audio": true,
-    "rank": 61
+    "rank": 61,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0062",
@@ -865,7 +926,8 @@
     "example_jp": "家族と旅行します。",
     "example_zh": "和家人旅行。",
     "audio": true,
-    "rank": 62
+    "rank": 62,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0063",
@@ -879,7 +941,8 @@
     "example_jp": "父は会社員です。",
     "example_zh": "我父親是公司職員。",
     "audio": true,
-    "rank": 63
+    "rank": 63,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0064",
@@ -893,7 +956,8 @@
     "example_jp": "母は料理が上手です。",
     "example_zh": "我母親很會做菜。",
     "audio": true,
-    "rank": 64
+    "rank": 64,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0065",
@@ -907,7 +971,8 @@
     "example_jp": "お父さんは元気ですか。",
     "example_zh": "你爸爸好嗎？",
     "audio": true,
-    "rank": 65
+    "rank": 65,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0066",
@@ -921,7 +986,8 @@
     "example_jp": "お母さんに電話します。",
     "example_zh": "打電話給媽媽。",
     "audio": true,
-    "rank": 66
+    "rank": 66,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0067",
@@ -935,7 +1001,8 @@
     "example_jp": "病院に行きます。",
     "example_zh": "去醫院。",
     "audio": true,
-    "rank": 67
+    "rank": 67,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0068",
@@ -949,7 +1016,8 @@
     "example_jp": "薬を飲みます。",
     "example_zh": "吃藥。",
     "audio": true,
-    "rank": 68
+    "rank": 68,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0069",
@@ -963,7 +1031,8 @@
     "example_jp": "頭が痛いです。",
     "example_zh": "頭痛。",
     "audio": true,
-    "rank": 69
+    "rank": 69,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0070",
@@ -977,7 +1046,8 @@
     "example_jp": "お腹が痛いです。",
     "example_zh": "肚子痛。",
     "audio": true,
-    "rank": 70
+    "rank": 70,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0071",
@@ -991,7 +1061,8 @@
     "example_jp": "足が痛いです。",
     "example_zh": "腳痛。",
     "audio": true,
-    "rank": 71
+    "rank": 71,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0072",
@@ -1005,7 +1076,8 @@
     "example_jp": "熱があります。",
     "example_zh": "有發燒。",
     "audio": true,
-    "rank": 72
+    "rank": 72,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0073",
@@ -1019,7 +1091,8 @@
     "example_jp": "今日は疲れました。",
     "example_zh": "今天累了。",
     "audio": true,
-    "rank": 73
+    "rank": 73,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0074",
@@ -1033,7 +1106,8 @@
     "example_jp": "会えて嬉しいです。",
     "example_zh": "見到你很開心。",
     "audio": true,
-    "rank": 74
+    "rank": 74,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0075",
@@ -1047,7 +1121,8 @@
     "example_jp": "悲しい映画を見ました。",
     "example_zh": "看了悲傷的電影。",
     "audio": true,
-    "rank": 75
+    "rank": 75,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0076",
@@ -1061,7 +1136,8 @@
     "example_jp": "日本語が好きです。",
     "example_zh": "喜歡日文。",
     "audio": true,
-    "rank": 76
+    "rank": 76,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0077",
@@ -1075,7 +1151,8 @@
     "example_jp": "辛い食べ物が嫌いです。",
     "example_zh": "討厭辣的食物。",
     "audio": true,
-    "rank": 77
+    "rank": 77,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0078",
@@ -1089,7 +1166,8 @@
     "example_jp": "一つください。",
     "example_zh": "請給我一個。",
     "audio": true,
-    "rank": 78
+    "rank": 78,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0079",
@@ -1103,7 +1181,8 @@
     "example_jp": "二人で行きます。",
     "example_zh": "兩個人去。",
     "audio": true,
-    "rank": 79
+    "rank": 79,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0080",
@@ -1117,7 +1196,8 @@
     "example_jp": "三時に会いましょう。",
     "example_zh": "三點見吧。",
     "audio": true,
-    "rank": 80
+    "rank": 80,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0081",
@@ -1131,7 +1211,8 @@
     "example_jp": "四月に日本へ行きます。",
     "example_zh": "四月去日本。",
     "audio": true,
-    "rank": 81
+    "rank": 81,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0082",
@@ -1145,7 +1226,8 @@
     "example_jp": "五分待ってください。",
     "example_zh": "請等五分鐘。",
     "audio": true,
-    "rank": 82
+    "rank": 82,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0083",
@@ -1159,7 +1241,8 @@
     "example_jp": "水を一本買います。",
     "example_zh": "買一瓶水。",
     "audio": true,
-    "rank": 83
+    "rank": 83,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0084",
@@ -1173,7 +1256,8 @@
     "example_jp": "切符を二枚ください。",
     "example_zh": "請給我兩張票。",
     "audio": true,
-    "rank": 84
+    "rank": 84,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0085",
@@ -1187,7 +1271,8 @@
     "example_jp": "猫が三匹います。",
     "example_zh": "有三隻貓。",
     "audio": true,
-    "rank": 85
+    "rank": 85,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0086",
@@ -1201,7 +1286,8 @@
     "example_jp": "車が一台あります。",
     "example_zh": "有一台車。",
     "audio": true,
-    "rank": 86
+    "rank": 86,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0087",
@@ -1215,7 +1301,8 @@
     "example_jp": "ラーメンを食べたいです。",
     "example_zh": "想吃拉麵。",
     "audio": true,
-    "rank": 87
+    "rank": 87,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0088",
@@ -1229,7 +1316,8 @@
     "example_jp": "朝ご飯を食べました。",
     "example_zh": "吃了早餐。",
     "audio": true,
-    "rank": 88
+    "rank": 88,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0089",
@@ -1243,7 +1331,8 @@
     "example_jp": "パンと牛乳を買います。",
     "example_zh": "買麵包和牛奶。",
     "audio": true,
-    "rank": 89
+    "rank": 89,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0090",
@@ -1257,7 +1346,8 @@
     "example_jp": "牛乳は飲みません。",
     "example_zh": "不喝牛奶。",
     "audio": true,
-    "rank": 90
+    "rank": 90,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0091",
@@ -1271,7 +1361,8 @@
     "example_jp": "コーヒーをください。",
     "example_zh": "請給我咖啡。",
     "audio": true,
-    "rank": 91
+    "rank": 91,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0092",
@@ -1285,7 +1376,8 @@
     "example_jp": "お茶を飲みます。",
     "example_zh": "喝茶。",
     "audio": true,
-    "rank": 92
+    "rank": 92,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0093",
@@ -1299,7 +1391,8 @@
     "example_jp": "寿司が好きです。",
     "example_zh": "喜歡壽司。",
     "audio": true,
-    "rank": 93
+    "rank": 93,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0094",
@@ -1313,7 +1406,8 @@
     "example_jp": "きれいな花ですね。",
     "example_zh": "好漂亮的花。",
     "audio": true,
-    "rank": 94
+    "rank": 94,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0095",
@@ -1327,7 +1421,8 @@
     "example_jp": "緑の服を着ています。",
     "example_zh": "穿著綠色衣服。",
     "audio": true,
-    "rank": 95
+    "rank": 95,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0096",
@@ -1341,7 +1436,8 @@
     "example_jp": "茶色の靴を買いました。",
     "example_zh": "買了咖啡色的鞋。",
     "audio": true,
-    "rank": 96
+    "rank": 96,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0097",
@@ -1355,7 +1451,8 @@
     "example_jp": "新しい靴を買いました。",
     "example_zh": "買了新鞋。",
     "audio": true,
-    "rank": 97
+    "rank": 97,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0098",
@@ -1369,7 +1466,8 @@
     "example_jp": "服を見たいです。",
     "example_zh": "想看衣服。",
     "audio": true,
-    "rank": 98
+    "rank": 98,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0099",
@@ -1383,7 +1481,8 @@
     "example_jp": "かばんの中に本があります。",
     "example_zh": "包包裡有書。",
     "audio": true,
-    "rank": 99
+    "rank": 99,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0100",
@@ -1397,7 +1496,8 @@
     "example_jp": "写真を撮ってください。",
     "example_zh": "請幫我拍照。",
     "audio": true,
-    "rank": 100
+    "rank": 100,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0101",
@@ -1411,7 +1511,8 @@
     "example_jp": "切符を二枚ください。",
     "example_zh": "請給我兩張票。",
     "audio": true,
-    "rank": 101
+    "rank": 101,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0102",
@@ -1425,7 +1526,8 @@
     "example_jp": "道を聞きます。",
     "example_zh": "問路。",
     "audio": true,
-    "rank": 102
+    "rank": 102,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0103",
@@ -1439,7 +1541,8 @@
     "example_jp": "図書館で本を読みます。",
     "example_zh": "在圖書館看書。",
     "audio": true,
-    "rank": 103
+    "rank": 103,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0104",
@@ -1453,7 +1556,8 @@
     "example_jp": "公園に子供がいます。",
     "example_zh": "公園裡有小孩。",
     "audio": true,
-    "rank": 104
+    "rank": 104,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0105",
@@ -1467,7 +1571,8 @@
     "example_jp": "銀行は駅の近くです。",
     "example_zh": "銀行在車站附近。",
     "audio": true,
-    "rank": 105
+    "rank": 105,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0106",
@@ -1481,7 +1586,8 @@
     "example_jp": "郵便局へ行きます。",
     "example_zh": "去郵局。",
     "audio": true,
-    "rank": 106
+    "rank": 106,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0107",
@@ -1495,7 +1601,8 @@
     "example_jp": "コンビニで水を買います。",
     "example_zh": "在便利商店買水。",
     "audio": true,
-    "rank": 107
+    "rank": 107,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0108",
@@ -1509,7 +1616,8 @@
     "example_jp": "スーパーで果物を買います。",
     "example_zh": "在超市買水果。",
     "audio": true,
-    "rank": 108
+    "rank": 108,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0109",
@@ -1523,7 +1631,8 @@
     "example_jp": "先生に聞きます。",
     "example_zh": "問老師。",
     "audio": true,
-    "rank": 109
+    "rank": 109,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0110",
@@ -1537,7 +1646,8 @@
     "example_jp": "私は学生です。",
     "example_zh": "我是學生。",
     "audio": true,
-    "rank": 110
+    "rank": 110,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0111",
@@ -1551,7 +1661,8 @@
     "example_jp": "宿題を書きました。",
     "example_zh": "寫了作業。",
     "audio": true,
-    "rank": 111
+    "rank": 111,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0112",
@@ -1565,7 +1676,8 @@
     "example_jp": "日本語を勉強しています。",
     "example_zh": "正在學日文。",
     "audio": true,
-    "rank": 112
+    "rank": 112,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0113",
@@ -1579,7 +1691,8 @@
     "example_jp": "父は会社員です。",
     "example_zh": "我父親是公司職員。",
     "audio": true,
-    "rank": 113
+    "rank": 113,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0114",
@@ -1593,7 +1706,8 @@
     "example_jp": "時間がありますか。",
     "example_zh": "有時間嗎？",
     "audio": true,
-    "rank": 114
+    "rank": 114,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0115",
@@ -1607,7 +1721,8 @@
     "example_jp": "明日は休みです。",
     "example_zh": "明天休假。",
     "audio": true,
-    "rank": 115
+    "rank": 115,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0116",
@@ -1621,7 +1736,8 @@
     "example_jp": "駅の前で待ちます。",
     "example_zh": "在車站前等。",
     "audio": true,
-    "rank": 116
+    "rank": 116,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0117",
@@ -1635,7 +1751,8 @@
     "example_jp": "学校の後ろに公園があります。",
     "example_zh": "學校後面有公園。",
     "audio": true,
-    "rank": 117
+    "rank": 117,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0118",
@@ -1649,7 +1766,8 @@
     "example_jp": "右に曲がってください。",
     "example_zh": "請往右轉。",
     "audio": true,
-    "rank": 118
+    "rank": 118,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0119",
@@ -1663,7 +1781,8 @@
     "example_jp": "左に銀行があります。",
     "example_zh": "左邊有銀行。",
     "audio": true,
-    "rank": 119
+    "rank": 119,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0120",
@@ -1677,7 +1796,8 @@
     "example_jp": "右に曲がります。",
     "example_zh": "往右轉。",
     "audio": true,
-    "rank": 120
+    "rank": 120,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0121",
@@ -1691,7 +1811,8 @@
     "example_jp": "少し待ってください。",
     "example_zh": "請稍等。",
     "audio": true,
-    "rank": 121
+    "rank": 121,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0122",
@@ -1705,7 +1826,8 @@
     "example_jp": "タクシーを呼んでください。",
     "example_zh": "請叫計程車。",
     "audio": true,
-    "rank": 122
+    "rank": 122,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0123",
@@ -1719,7 +1841,8 @@
     "example_jp": "写真を撮ります。",
     "example_zh": "拍照。",
     "audio": true,
-    "rank": 123
+    "rank": 123,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0124",
@@ -1733,7 +1856,8 @@
     "example_jp": "会社で働きます。",
     "example_zh": "在公司工作。",
     "audio": true,
-    "rank": 124
+    "rank": 124,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0125",
@@ -1747,7 +1871,8 @@
     "example_jp": "友達に会います。",
     "example_zh": "和朋友見面。",
     "audio": true,
-    "rank": 125
+    "rank": 125,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0126",
@@ -1761,7 +1886,8 @@
     "example_jp": "家へ帰ります。",
     "example_zh": "回家。",
     "audio": true,
-    "rank": 126
+    "rank": 126,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0127",
@@ -1775,7 +1901,8 @@
     "example_jp": "今日は眠いです。",
     "example_zh": "今天很想睡。",
     "audio": true,
-    "rank": 127
+    "rank": 127,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0128",
@@ -1789,7 +1916,8 @@
     "example_jp": "仕事が忙しいです。",
     "example_zh": "工作很忙。",
     "audio": true,
-    "rank": 128
+    "rank": 128,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0129",
@@ -1803,7 +1931,8 @@
     "example_jp": "朝は早いです。",
     "example_zh": "早上很早。",
     "audio": true,
-    "rank": 129
+    "rank": 129,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0130",
@@ -1817,7 +1946,8 @@
     "example_jp": "電車が遅いです。",
     "example_zh": "電車很慢。",
     "audio": true,
-    "rank": 130
+    "rank": 130,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0131",
@@ -1831,7 +1961,8 @@
     "example_jp": "静かな部屋です。",
     "example_zh": "安靜的房間。",
     "audio": true,
-    "rank": 131
+    "rank": 131,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0132",
@@ -1845,7 +1976,8 @@
     "example_jp": "駅前は賑やかです。",
     "example_zh": "車站前很熱鬧。",
     "audio": true,
-    "rank": 132
+    "rank": 132,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0133",
@@ -1859,7 +1991,8 @@
     "example_jp": "卵を一つ買います。",
     "example_zh": "買一顆蛋。",
     "audio": true,
-    "rank": 133
+    "rank": 133,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0134",
@@ -1873,7 +2006,8 @@
     "example_jp": "肉を食べたいです。",
     "example_zh": "想吃肉。",
     "audio": true,
-    "rank": 134
+    "rank": 134,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0135",
@@ -1887,7 +2021,8 @@
     "example_jp": "野菜や果物を買います。",
     "example_zh": "買蔬菜、水果之類。",
     "audio": true,
-    "rank": 135
+    "rank": 135,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0136",
@@ -1901,7 +2036,8 @@
     "example_jp": "果物が好きです。",
     "example_zh": "喜歡水果。",
     "audio": true,
-    "rank": 136
+    "rank": 136,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0137",
@@ -1915,7 +2051,8 @@
     "example_jp": "いちごを食べます。",
     "example_zh": "吃草莓。",
     "audio": true,
-    "rank": 137
+    "rank": 137,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0138",
@@ -1929,7 +2066,8 @@
     "example_jp": "夏にすいかを食べます。",
     "example_zh": "夏天吃西瓜。",
     "audio": true,
-    "rank": 138
+    "rank": 138,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0139",
@@ -1943,7 +2081,8 @@
     "example_jp": "桃は甘いです。",
     "example_zh": "桃子很甜。",
     "audio": true,
-    "rank": 139
+    "rank": 139,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0140",
@@ -1957,7 +2096,8 @@
     "example_jp": "兎が一匹います。",
     "example_zh": "有一隻兔子。",
     "audio": true,
-    "rank": 140
+    "rank": 140,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0141",
@@ -1971,7 +2111,8 @@
     "example_jp": "象は大きいです。",
     "example_zh": "大象很大。",
     "audio": true,
-    "rank": 141
+    "rank": 141,
+    "source": "local curated seed"
   },
   {
     "id": "vocab-0142",
@@ -1985,6 +2126,7 @@
     "example_jp": "猿が木の上にいます。",
     "example_zh": "猴子在樹上。",
     "audio": true,
-    "rank": 142
+    "rank": 142,
+    "source": "local curated seed"
   }
 ]

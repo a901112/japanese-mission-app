@@ -1,36 +1,36 @@
 import fs from 'node:fs';
+import https from 'node:https';
 import path from 'node:path';
 const outDir = path.join(process.cwd(), 'data', 'kotoba');
-const meta = {
-  'morning-train': ['電','早晨電車','聽懂方向、時間、要去哪裡。','に 是目的地，で 是交通手段或動作舞台。'],
-  'small-cafe': ['茶','巷口咖啡','點餐、請求、想要什麼。','ください 要物品；お願いします 請對方處理事情。'],
-  'tiny-hotel': ['宿','小旅館','確認狀態、房間、已經準備好。','ている 是眼前狀態；てある 是有人事先弄好了。'],
-  'rainy-shop': ['店','雨天小店','買東西、問價格、描述感覺。','い形容詞直接接名詞；な形容詞接名詞要加な。']
-};
-const places=[['駅','車站'],['会社','公司'],['学校','學校'],['病院','醫院'],['空港','機場'],['図書館','圖書館'],['銀行','銀行'],['公園','公園'],['ホテル','飯店'],['郵便局','郵局']];
-const times=[['七時','七點'],['八時半','八點半'],['明日','明天'],['月曜日','星期一'],['週末','週末'],['今朝','今天早上'],['夜','晚上'],['昼休み','午休']];
-const vehicles=[['電車','電車'],['バス','巴士'],['地下鉄','地下鐵'],['タクシー','計程車'],['自転車','腳踏車'],['新幹線','新幹線']];
-const cafeItems=[['水','水'],['コーヒー','咖啡'],['紅茶','紅茶'],['ケーキ','蛋糕'],['サンドイッチ','三明治'],['メニュー','菜單'],['スプーン','湯匙'],['砂糖','砂糖'],['牛乳','牛奶'],['おしぼり','濕紙巾']];
-const cafeVerbs=[['飲み','喝'],['食べ','吃'],['頼み','點'],['買い','買']];
-const openables=[['ドア','門'],['窓','窗戶'],['カーテン','窗簾']];
-const lights=[['電気','燈'],['エアコン','冷氣'],['テレビ','電視']];
-const prepared=[['鍵','鑰匙'],['タオル','毛巾'],['布団','棉被'],['部屋','房間'],['朝ご飯','早餐']];
-const views=[['海','海'],['山','山'],['駅','車站'],['庭','庭院'],['川','河川']];
-const shopItems=[['傘','傘'],['靴','鞋子'],['かばん','包包'],['ノート','筆記本'],['ペン','筆'],['薬','藥'],['服','衣服'],['切符','票']];
-const adjI=[['安い','便宜'],['高い','貴'],['新しい','新的'],['古い','舊的'],['軽い','輕'],['重い','重']];
-const adjNa=[['便利','方便'],['静か','安靜'],['きれい','漂亮 / 乾淨'],['丈夫','耐用'],['有名','有名']];
-const item=(a,i)=>a[i%a.length];
+const grammarFiles = [
+  ['N5','https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/grammar_ja_N5_full_alphabetical_0001.json'],
+  ['N4','https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/grammar_ja_N4_full_alphabetical_0001.json'],
+  ['N3','https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/grammar_ja_N3_full_alphabetical_0001.json'],
+  ['N2','https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/grammar_ja_N2_full_alphabetical_0001.json'],
+  ['N1','https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/grammar_ja_N1_full_alphabetical_0001.json']
+];
+function get(url){return new Promise((resolve,reject)=>https.get(url,{headers:{'User-Agent':'kotoba-trip-builder'}},r=>{if(r.statusCode<200||r.statusCode>=300){reject(Error(`HTTP ${r.statusCode} ${url}`));return;}let d='';r.setEncoding('utf8');r.on('data',c=>d+=c);r.on('end',()=>resolve(JSON.parse(d)));}).on('error',reject));}
 const ch=(text,zh,sense,correct,reason)=>({text,zh,sense,correct,reason});
-function qa(scene,index,type,prompt,answer,choices){const right=choices.find(x=>x.correct);return {id:`${scene}-${String(index+1).padStart(3,'0')}`,scene_id:scene,type,prompt,answer,answer_zh:right.zh,choices,explanation:right.reason,family:type,audio:index%5===0};}
-function make(scene,i){const n=i%12;if(scene==='morning-train'){const p=item(places,i),t=item(times,i*3),v=item(vehicles,i*5);if(n<4)return qa(scene,i,'direction',`你想說：我要去${p[1]}。`,`${p[0]}に行きます。`,[ch(`${p[0]}に行きます。`,`去${p[1]}`,'に 標移動目的地。',true,'行く的目的地用 に。'),ch(`${p[0]}で行きます。`,`在${p[1]}去`,'で 是動作發生地或手段。',false,'這句會像在那裡做「去」這個動作。'),ch(`${p[0]}を行きます。`,`把${p[1]}走`,'を 不標普通目的地。',false,'普通目的地不用 を。')]);if(n<8)return qa(scene,i,'time',`你想說：${t[1]}出門。`,`${t[0]}に出ます。`,[ch(`${t[0]}に出ます。`,`${t[1]}出門`,'具體時間點用 に。',true,'時間點清楚時用 に。'),ch(`${t[0]}で出ます。`,`在${t[1]}出門`,'で 不標時間點。',false,'で 比較像地點或手段。'),ch(`${t[0]}を出ます。`,`離開${t[1]}`,'を 標離開的場所。',false,'時間點不是離開的場所。')]);return qa(scene,i,'vehicle',`你想說：搭${v[1]}去。`,`${v[0]}で行きます。`,[ch(`${v[0]}で行きます。`,`搭${v[1]}去`,'で 標交通手段。',true,'交通工具作為手段，用 で。'),ch(`${v[0]}に行きます。`,`去${v[1]}`,'に 會變目的地。',false,'這句像是去交通工具那裡。'),ch(`${v[0]}を行きます。`,`把${v[1]}走`,'を 不標交通手段。',false,'交通工具不是行く的受詞。')]);}
-if(scene==='small-cafe'){const f=item(cafeItems,i),verb=item(cafeVerbs,i*2);if(n<4)return qa(scene,i,'request-item',`你想說：請給我${f[1]}。`,`${f[0]}をください。`,[ch(`${f[0]}をください。`,`請給我${f[1]}`,'ください 前的物品常用 を。',true,'要某個物品時，用「物品をください」。'),ch(`${f[0]}がください。`,`${f[1]}請給`,'が 不能這樣接ください。',false,'ください 不是讓物品當主詞。'),ch(`${f[0]}にください。`,`請給到${f[1]}`,'に 會像接受者或方向。',false,'物品本身不是接受者。')]);if(n<8)return qa(scene,i,'want-action',`你想說：我想${verb[1]}${f[1]}。`,`${f[0]}を${verb[0]}たいです。`,[ch(`${f[0]}を${verb[0]}たいです。`,`想${verb[1]}${f[1]}`,'たい 表示想做某動作。',true,'想做的動作對象用 を。'),ch(`${f[0]}が${verb[0]}ます。`,`${f[1]}會${verb[1]}`,'主詞變成物品，語意跑掉。',false,'不是物品自己做動作。'),ch(`${f[0]}に${verb[0]}たいです。`,`想朝${f[1]}${verb[1]}`,'に 不標一般動作對象。',false,'想喝、想吃、想點通常用 を。')]);return qa(scene,i,'polite-service','你想說：麻煩你結帳。','お会計をお願いします。',[ch('お会計をお願いします。','麻煩你結帳','お願いします 請對方處理事情。',true,'結帳是請對方處理，用お願いします自然。'),ch('お会計をください。','請給我結帳','ください 偏向請給物品。',false,'結帳不是一個拿到手上的物品。'),ch('お会計をします。','我來結帳','變成自己做。',false,'沒有請對方幫忙的語氣。')]);}
-if(scene==='tiny-hotel'){if(n<3){const x=item(openables,i);return qa(scene,i,'open-state',`你想說：${x[1]}開著。`,`${x[0]}が開いています。`,[ch(`${x[0]}が開いています。`,`${x[1]}開著`,'開いている 是維持打開的狀態。',true,'這是眼前狀態，不是打開的瞬間。'),ch(`${x[0]}が開きます。`,`${x[1]}會打開 / 打開了`,'開く 是變化。',false,'題目是開著的狀態。'),ch(`${x[0]}を開けます。`,`把${x[1]}打開`,'開ける 是主動操作。',false,'題目不是要你去打開。')]);}if(n<6){const x=item(lights,i);return qa(scene,i,'on-state',`你想說：${x[1]}開著。`,`${x[0]}がついています。`,[ch(`${x[0]}がついています。`,`${x[1]}開著 / 亮著`,'ついている 是目前維持開的狀態。',true,'這是狀態，不是啟動瞬間。'),ch(`${x[0]}がつきます。`,`${x[1]}亮起來 / 會開`,'つく 是變化或功能。',false,'題目是開著，不是開起來。'),ch(`${x[0]}をつけます。`,`把${x[1]}打開`,'つける 是主動操作。',false,'題目不是操作。')]);}if(n<9){const x=item(prepared,i);return qa(scene,i,'prepared',`你想說：${x[1]}已經準備好了。`,`${x[0]}が用意してあります。`,[ch(`${x[0]}が用意してあります。`,`${x[1]}已經準備好了`,'てある 暗示有人事先準備。',true,'重點是已經弄好給人用。'),ch(`${x[0]}が用意しています。`,`${x[1]}正在準備`,'ている 容易變成正在做。',false,'題目強調事先完成。'),ch(`${x[0]}を用意します。`,`準備${x[1]}`,'一般動作。',false,'不是已經完成的狀態。')]);}const x=item(views,i);return qa(scene,i,'natural-visibility',`你想說：從房間看得到${x[1]}。`,`部屋から${x[0]}が見えます。`,[ch(`部屋から${x[0]}が見えます。`,`從房間看得到${x[1]}`,'見える 是自然可見。',true,'看得到不是主動看，用見える。'),ch(`部屋から${x[0]}を見ます。`,`從房間看${x[1]}`,'見る 是主動看。',false,'題目是視野自然看得到。'),ch(`部屋から${x[0]}を見せます。`,`從房間給別人看${x[1]}`,'見せる 是讓人看。',false,'主體與動作都變了。')]);}
-const shop=item(shopItems,i),ia=item(adjI,i*2),na=item(adjNa,i*4);if(n<4)return qa(scene,i,'price',`你想問：這個${shop[1]}多少錢？`,`この${shop[0]}はいくらですか。`,[ch(`この${shop[0]}はいくらですか。`,`這個${shop[1]}多少錢？`,'は 把物品拿來當話題。',true,'問價格時，物品作話題很自然。'),ch(`この${shop[0]}をいくらですか。`,`把這個${shop[1]}多少錢`,'を 不接いくらですか。',false,'いくらですか 不是動詞受詞結構。'),ch(`この${shop[0]}にいくらですか。`,`在這個${shop[1]}多少錢`,'に 方向感不對。',false,'問物品價格不用 に。')]);if(n<8)return qa(scene,i,'i-adjective',`你想說：${ia[1]}的${shop[1]}。`,`${ia[0]}${shop[0]}です。`,[ch(`${ia[0]}${shop[0]}です。`,`${ia[1]}的${shop[1]}`,'い形容詞直接修飾名詞。',true,'い形容詞不用加な。'),ch(`${ia[0]}な${shop[0]}です。`,`${ia[1]}な的${shop[1]}`,'誤加な。',false,'な 是な形容詞用法。'),ch(`${ia[0]}の${shop[0]}です。`,`${ia[1]}的${shop[1]}`,'の 不接一般い形容詞。',false,'直接接名詞最自然。')]);return qa(scene,i,'na-adjective',`你想說：${na[1]}的${shop[1]}。`,`${na[0]}な${shop[0]}です。`,[ch(`${na[0]}な${shop[0]}です。`,`${na[1]}的${shop[1]}`,'な形容詞修飾名詞要加な。',true,'名詞前面保留な。'),ch(`${na[0]}い${shop[0]}です。`,`${na[1]}い的${shop[1]}`,'誤當い形容詞。',false,'便利、静か這類不是加い。'),ch(`${na[0]}の${shop[0]}です。`,`${na[1]}的${shop[1]}`,'の 不是本題形容詞修飾。',false,'這題要練な形容詞。')]);}
-const scenes=Object.entries(meta).map(([id,m])=>({id,icon:m[0],title:m[1],copy:m[2],memory:m[3],cards:Array.from({length:500},(_,i)=>make(id,i))}));
+const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9一-龥ぁ-んァ-ンー]+/g,'-').replace(/^-|-$/g,'').slice(0,48)||'grammar';
+function shuffleStable(items,seed){return items.map((value,index)=>({value,sort:((seed+3)*(index+11)*9301)%9973})).sort((a,b)=>a.sort-b.sort).map(x=>x.value)}
+function choices(pool,right,seed){const others=pool.filter(x=>x.jp!==right.jp),picked=[];for(let off=1;picked.length<3&&off<others.length+8;off++){const c=others[(seed*7+off*13)%others.length];if(c&&!picked.some(x=>x.jp===c.jp))picked.push(c)}return shuffleStable([ch(right.jp,right.en,right.title,true,`${right.title}：${right.short}`),...picked.map(x=>ch(x.jp,x.en,x.title,false,`這句屬於「${x.title}」，意思和題目不同。`))],seed)}
+const scenes=[];
+for (const [level,url] of grammarFiles) {
+  const grammar=await get(url);
+  const examples=[];
+  grammar.forEach((point,pointIndex)=>(point.examples||[]).forEach((ex,exampleIndex)=>{if(ex.jp&&ex.en)examples.push({level,jp:ex.jp,en:ex.en,title:point.title,short:point.short_explanation||point.formation||'',formation:point.formation||'',pointIndex,exampleIndex})}));
+  const seen=new Set();
+  const unique=examples.filter(x=>{const k=`${x.jp}|${x.en}`;if(seen.has(k))return false;seen.add(k);return true;});
+  const cards=unique.map((x,i)=>({id:`grammar-${level}-${String(i+1).padStart(4,'0')}`,scene_id:`grammar-${level}`,type:'open-grammar',prompt:`英文意思：${x.en}`,answer:x.jp,answer_zh:x.en,choices:choices(unique,x,i),explanation:`${x.title}${x.formation?`｜${x.formation}`:''}｜${x.short}`,family:`grammar_${level}_${slug(x.title)}`,audio:i%3===0,source:'Hanabira Japanese Content',license:'Creative Commons, attribution required',source_url:url}));
+  scenes.push({id:`grammar-${level}`,icon:level.replace('N',''),title:`${level} 文法例句`,copy:`Hanabira 開放內容，${cards.length} 題不重複例句。`,memory:'先理解意思，再辨認自然日文。來源題句保留出處，不硬湊題量。',cards});
+}
 const src=JSON.parse(fs.readFileSync('data/vocabulary/vocabulary_items.json','utf8'));
 const seen=new Set();
-const vocab=src.filter(x=>x.jp&&x.kana&&x.zh).filter(x=>{const k=`${x.jp}|${x.kana}|${x.zh}`;if(seen.has(k))return false;seen.add(k);return true;}).map((x,i)=>({id:`vocab-${String(i+1).padStart(4,'0')}`,jp:x.jp,kana:x.kana,zh:x.zh,pos:x.pos||'詞彙',category:(x.categories?.[0]||'基礎').replace(/^cat_/,''),mode:'看日文選中文',prompt:'這個詞是什麼意思？',example_jp:x.example?.jp||`${x.jp}を覚えます。`,example_zh:x.example_zh||`${x.zh}的例句。`,audio:true,rank:i+1}));
+const vocab=src.filter(x=>x.jp&&x.kana&&x.zh).filter(x=>{const k=`${x.jp}|${x.kana}|${x.zh}`;if(seen.has(k))return false;seen.add(k);return true;}).map((x,i)=>({id:`vocab-${String(i+1).padStart(4,'0')}`,jp:x.jp,kana:x.kana,zh:x.zh,pos:x.pos||'詞彙',category:(x.categories?.[0]||'基礎').replace(/^cat_/,''),mode:'看日文選中文',prompt:'這個詞是什麼意思？',example_jp:x.example?.jp||`${x.jp}を覚えます。`,example_zh:x.example_zh||`${x.zh}的例句。`,audio:true,rank:i+1,source:'local curated seed'}));
+const attribution={version:'Kotoba Trip V5 Open Content',sources:[{name:'Hanabira Japanese Content',url:'https://github.com/tristcoil/hanabira.org-japanese-content',license_note:'Creative Commons License; attribution/link to hanabira.org required.',used_for:'JLPT N5-N1 grammar points and example sentences'},{name:'Tatoeba',url:'https://tatoeba.org/en/downloads',license_note:'CC BY 2.0 FR / CC0 depending on sentence; not imported in this V5 build yet because Tatoeba recommends filtering and proofreading learning materials.',used_for:'researched as future sentence source'}]};
 fs.mkdirSync(outDir,{recursive:true});
 fs.writeFileSync(path.join(outDir,'scene_questions.json'),JSON.stringify(scenes,null,2)+'\n');
 fs.writeFileSync(path.join(outDir,'vocabulary_cards.json'),JSON.stringify(vocab,null,2)+'\n');
-console.log('scene',scenes.reduce((a,s)=>a+s.cards.length,0),'vocab',vocab.length);
+fs.writeFileSync(path.join(outDir,'source_attribution.json'),JSON.stringify(attribution,null,2)+'\n');
+console.log('open grammar questions',scenes.reduce((s,x)=>s+x.cards.length,0));
+console.log('unique vocab',vocab.length);

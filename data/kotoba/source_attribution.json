@@ -1,0 +1,17 @@
+{
+  "version": "Kotoba Trip V5 Open Content",
+  "sources": [
+    {
+      "name": "Hanabira Japanese Content",
+      "url": "https://github.com/tristcoil/hanabira.org-japanese-content",
+      "license_note": "Creative Commons License; attribution/link to hanabira.org required.",
+      "used_for": "JLPT N5-N1 grammar points and example sentences"
+    },
+    {
+      "name": "Tatoeba",
+      "url": "https://tatoeba.org/en/downloads",
+      "license_note": "CC BY 2.0 FR / CC0 depending on sentence; not imported in this V5 build yet because Tatoeba recommends filtering and proofreading learning materials.",
+      "used_for": "researched as future sentence source"
+    }
+  ]
+}
