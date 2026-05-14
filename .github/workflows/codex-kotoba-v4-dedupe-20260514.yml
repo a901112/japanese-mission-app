@@ -1,0 +1,89 @@
+name: Publish Kotoba Trip V4 deduped data
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/codex-kotoba-v4-dedupe-20260514.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dedupe V3 data and bump to V4
+        run: |
+          set -euxo pipefail
+          perl -0pi -e 's/Kotoba Trip V3/Kotoba Trip V4/g; s/kotobaTripProgress_v3/kotobaTripProgress_v4/g; s/已改用語意白名單模板/已刪除同句同答案的重複題/g' app.js index.html
+          node - <<'NODE'
+          const fs = require('fs');
+          const scenes = JSON.parse(fs.readFileSync('data/kotoba/scene_questions.json', 'utf8'));
+          for (const scene of scenes) {
+            const seen = new Set();
+            const cards = [];
+            for (const card of scene.cards) {
+              const key = `${card.prompt}|${card.answer}`;
+              if (seen.has(key)) continue;
+              seen.add(key);
+              card.id = `${scene.id}-${String(cards.length + 1).padStart(3, '0')}`;
+              cards.push(card);
+            }
+            scene.cards = cards;
+          }
+          const vocab = JSON.parse(fs.readFileSync('data/kotoba/vocabulary_cards.json', 'utf8'));
+          const vocabSeen = new Set();
+          const uniqueVocab = [];
+          for (const item of vocab) {
+            const key = `${item.jp}|${item.kana}|${item.zh}`;
+            if (vocabSeen.has(key)) continue;
+            vocabSeen.add(key);
+            item.id = `vocab-${String(uniqueVocab.length + 1).padStart(4, '0')}`;
+            uniqueVocab.push(item);
+          }
+          fs.writeFileSync('data/kotoba/scene_questions.json', JSON.stringify(scenes, null, 2) + '\n');
+          fs.writeFileSync('data/kotoba/vocabulary_cards.json', JSON.stringify(uniqueVocab, null, 2) + '\n');
+          console.log('scene cards', scenes.reduce((sum, scene) => sum + scene.cards.length, 0));
+          console.log('vocab cards', uniqueVocab.length);
+          NODE
+          node - <<'NODE'
+          const fs = require('fs');
+          let builder = fs.readFileSync('scripts/build-kotoba-data.mjs', 'utf8');
+          builder = builder.replace('cards: Array.from({ length: 500 }, (_, index) => makeQuestion(id, index))', 'cards: uniqueQuestions(id)');
+          if (!builder.includes('function uniqueQuestions(sceneId)')) {
+            builder = builder.replace(/\nfunction normalizeVocab\(item, index\)/, `\nfunction uniqueQuestions(sceneId) {\n  const seen = new Set();\n  const cards = [];\n  for (let index = 0; index < 500; index += 1) {\n    const card = makeQuestion(sceneId, index);\n    const key = \`${'${card.prompt}'}|${'${card.answer}'}\`;\n    if (seen.has(key)) continue;\n    seen.add(key);\n    card.id = \`${'${sceneId}'}-${'${String(cards.length + 1).padStart(3, "0")}'}\`;\n    cards.push(card);\n  }\n  return cards;\n}\n\nfunction normalizeVocab(item, index)`);
+          }
+          fs.writeFileSync('scripts/build-kotoba-data.mjs', builder);
+          NODE
+      - name: Validate V4 has no duplicates
+        run: |
+          set -euxo pipefail
+          node --check app.js
+          node - <<'NODE'
+          const fs=require('fs');
+          const scenes=JSON.parse(fs.readFileSync('data/kotoba/scene_questions.json','utf8'));
+          let total=0;
+          for (const scene of scenes) {
+            const keys=scene.cards.map(q=>`${q.prompt}|${q.answer}`);
+            const unique=new Set(keys).size;
+            if (scene.cards.length !== unique) throw new Error(`${scene.id} still has duplicate questions`);
+            total += scene.cards.length;
+          }
+          const vocab=JSON.parse(fs.readFileSync('data/kotoba/vocabulary_cards.json','utf8'));
+          const vkeys=vocab.map(x=>`${x.jp}|${x.kana}|${x.zh}`);
+          if (vocab.length !== new Set(vkeys).size) throw new Error('duplicate vocab');
+          const app=fs.readFileSync('app.js','utf8');
+          if (!app.includes('Kotoba Trip V4')) throw new Error('missing V4');
+          if (total >= 2000) throw new Error('fake filler count returned');
+          console.log('V4 dedupe validation passed', total, vocab.length);
+          NODE
+      - name: Commit V4
+        run: |
+          set -euxo pipefail
+          git config user.name 'codex-bot'
+          git config user.email 'codex-bot@users.noreply.github.com'
+          git add app.js index.html data/kotoba scripts/build-kotoba-data.mjs
+          git commit -m 'fix: remove duplicate generated questions in Kotoba Trip V4'
+          git push origin HEAD:main
