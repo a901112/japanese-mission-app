@@ -17,7 +17,9 @@ jobs:
       - name: Download updated site files
         run: |
           set -euxo pipefail
-          curl -L --fail --retry 3 'https://tmpfiles.org/dl/wmwVw9m7e2Lj/kotoba-trip-v2-data.zip' -o /tmp/kotoba-trip-v2-data.zip
+          curl -L --retry 3 -A 'Mozilla/5.0' 'https://tmpfiles.org/dl/wmwVw9m7e2Lj/kotoba-trip-v2-data.zip' -o /tmp/kotoba-trip-v2-data.zip
+          ls -lh /tmp/kotoba-trip-v2-data.zip
+          file /tmp/kotoba-trip-v2-data.zip
           python3 - <<'PY'
           import zipfile
           z = zipfile.ZipFile('/tmp/kotoba-trip-v2-data.zip')
